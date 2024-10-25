@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en-UK" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/header-footer}">
+
+<head>
+    <!-- Page-specific stylesheets -->
+    <link rel="stylesheet" href="/stylesheets/welcome.css">
+
+    <!-- Page-specific scripts -->
+    <script src="/javascript/push.js" type="module"></script>
+</head>
+
+<body>
+<main>
+    <h2 th:text="${TEXTS.claim}"></h2>
+    <h3 th:utext="${TEXTS.benefits}"></h3>
+
+    <a href="/event/new">
+        <button class="btn" th:text="${TEXTS.setup}"></button>
+    </a>
+
+    <ol>
+        <li th:each="step : ${TEXTS.steps}" th:text="${step}"></li>
+    </ol>
+</main>
+</body>
+</html>

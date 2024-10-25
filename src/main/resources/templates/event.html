@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-UK" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/skeleton}">
+
+<head>
+    <!-- Page-specific title -->
+    <title th:text="${event.title} + ' | ThrSqr'"></title>
+
+    <!-- Page-specific stylesheets -->
+    <link rel="stylesheet" href="/stylesheets/event.css">
+
+    <!-- Page-specific scripts -->
+    <script src="/javascript/application.js" type="module"></script>
+    <script src="/javascript/push.js" type="module"></script>
+
+    <!-- Page-specific icons -->
+    <link rel="apple-touch-icon" sizes="144x144" th:href="@{${icons[144]}}">
+    <link rel="apple-touch-icon" sizes="192x192" th:href="@{${icons[192]}}">
+    <link rel="apple-touch-icon" sizes="256x256" th:href="@{${icons[256]}}">
+    <link rel="icon" type="image/png" sizes="192x192" th:href="@{${icons[192]}}">
+    <link rel="icon" type="image/png" sizes="256x256" th:href="@{${icons[256]}}">
+
+    <!-- Page-specific manifest -->
+    <link rel="manifest" th:href="@{/${event.id}.webmanifest}" crossorigin="use-credentials">
+
+</head>
+
+<body>
+<div id="flexwrap">
+    <header>
+        <div th:replace="fragments/homelink :: homelink"></div>
+        <div id="rightcorner">
+            <div th:replace="fragments/links :: links"></div>
+            <div id="headerlogo">
+                <img th:src="${event.logourl}" id="eventLogo" width="100px">
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="logo">
+            <img th:src="${event.logourl}" id="eventLogo" width="250px">
+        </div>
+
+        <div id="info">
+            <h1 th:text="${event.title}"></h1>
+            <h2 th:utext="${TEXTS.eventEvery} + ' <span id=\"eventDay\"></span> ' + ${TEXTS.eventAt} + ' <span id=\"eventTime\"></span> <span class=\"smaller\" id=\"localTimezone\"></span>'"></h2>
+            <p th:text="${event.info}"></p>
+            <div id="subscriptions"></div>
+        </div>
+
+        <div id="form">
+            <h3 th:data-previouseventtime="${previousEventTime}" th:text="${TEXTS.nextTime} + ' <span id=\"nextDate\"></span>.'"></h3>
+            <div id="responsePeek">
+                <h4 th:if="${going > 0 || notGoing > 0}">
+                    <a th:if="${going > 0}" class="thr-green" href="#" th:text="${TEXTS.there} + ' - ' + ${going}"></a>
+                    <span th:if="${going > 0 && notGoing > 0}"> | </span>
+                    <a th:if="${notGoing > 0}" class="sqr-red" href="#" th:text="${TEXTS.square} + ' - ' + ${notGoing}"></a>
+                </h4>
+                <h4 th:if="${going === 0 && notGoing === 0}" th:text="${TEXTS.thereOrSquare}"></h4>
+            </div>
+
+            <h4 id="thereOrSquare" th:text="${TEXTS.thereOrSquare}"></h4>
+            <form th:action="@{/event/${event.id}}" method="post">
+                <dl>
+                    <dt>
+                        <label class="bold-text" for="username">Name</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="username" name="username" placeholder="Name" th:value="${username}" maxlength="50" required>
+                    </dd>
+
+                    <dt>
+                        <label class="bold-text" for="comment" th:text="${TEXTS.comment} + ' (optional)'"></label>
+                    </dt>
+                    <dd>
+                        <textarea rows="3" maxlength="150" id="comment" name="comment" th:placeholder="${TEXTS.comment}"></textarea>
+                    </dd>
+
+                    <dt>
+                        <label class="bold-text" th:text="${TEXTS.illBe}"></label>
+                    </dt>
+                    <dd id="buttons">
+                        <button class="btn-thr" th:formaction="@{/event/${event.id}/1}" th:text="${TEXTS.there}"></button>
+                        <button class="btn-sqr" th:formaction="@{/event/${event.id}/0}" th:text="${TEXTS.square}"></button>
+                    </dd>
+                </dl>
+            </form>
+            <p class="smaller" th:if="${going > 0 || notGoing > 0}" th:text="${TEXTS.howToRemove}"></p>
+        </div>
+
+        <div id="responses">
+            <h2 id="there" class="thr-green" th:if="${going > 0}" th:text="${TEXTS.there} + ' - ' + ${going}"></h2>
+            <div th:each="response : ${responses}" th:if="${response.there}">
+                <form th:action="@{/event/${event.id}/remove/${response.part_id}}" method="post" class="delete">
+                    <p>
+                        <a href="#" th:text="${response.username}"></a>
+                        <span class="smaller" th:text="${response.comment}"></span>
+                    </p>
+                </form>
+            </div>
+
+            <h2 id="square" class="sqr-red" th:if="${notGoing > 0}" th:text="${TEXTS.square} + ' - ' + ${notGoing}"></h2>
+            <div th:each="response : ${responses}" th:if="${!response.there}">
+                <form th:action="@{/event/${event.id}/remove/${response.part_id}}" method="post" class="delete">
+                    <p>
+                        <a href="#" th:text="${response.username}"></a>
+                        <span class="smaller" th:text="${response.comment}"></span>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="fragments/links :: links"></footer>
+</div>
+</body>
+</html>

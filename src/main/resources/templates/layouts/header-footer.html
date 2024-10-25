@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-UK" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/skeleton}">
+
+<head>
+    <!-- Page-specific stylesheets -->
+    <link rel="stylesheet" href="/stylesheets/header-footer.css">
+</head>
+
+<body>
+<div id="flexwrap">
+    <header>
+        <a href="/static">
+            <div id="logoimg">
+                <img src="/images/thrsqrlogo.png" width="150" border="0">
+            </div>
+        </a>
+        <a href="/static">
+            <div id="logotext">
+                <h1><span class="thr-green">Thr</span><span class="sqr-red">Sqr</span></h1>
+                <p id="there-or-square">Will you be <span class="thr-green">There</span> or be <span class="sqr-red">Square</span>?</p>
+            </div>
+        </a>
+    </header>
+
+    <!-- Page-specific main content -->
+    <main layout:fragment="main"></main>
+
+    <footer th:replace="fragments/links :: links"></footer>
+</div>
+</body>
+</html>
