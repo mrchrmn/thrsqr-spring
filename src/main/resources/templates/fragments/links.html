@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-UK" xmlns:th="http://www.thymeleaf.org">
 <body>
-<ul class="links">
+<ul class="links" th:fragment="links">
     <li><a href="/change-language" th:text="${TEXTS.changeLanguage}"></a></li>
     <li><a href="/reset/user" th:text="${TEXTS.resetUserData}"></a></li>
     <li><a href="/legal" th:text="${TEXTS.legal.link}"></a></li>

@@ -7,14 +7,14 @@
 </head>
 
 <body>
-<div id="flexwrap">
+<div id="flexwrap" layout:fragment="body">
     <header>
-        <a href="/static">
+        <a href="/">
             <div id="logoimg">
                 <img src="/images/thrsqrlogo.png" width="150" border="0">
             </div>
         </a>
-        <a href="/static">
+        <a href="/">
             <div id="logotext">
                 <h1><span class="thr-green">Thr</span><span class="sqr-red">Sqr</span></h1>
                 <p id="there-or-square">Will you be <span class="thr-green">There</span> or be <span class="sqr-red">Square</span>?</p>
@@ -25,7 +25,7 @@
     <!-- Page-specific main content -->
     <main layout:fragment="main"></main>
 
-    <footer th:replace="fragments/links :: links"></footer>
+    <footer th:insert="~{fragments/links :: links}"></footer>
 </div>
 </body>
 </html>

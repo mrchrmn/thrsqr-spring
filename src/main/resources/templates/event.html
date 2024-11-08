@@ -25,11 +25,11 @@
 </head>
 
 <body>
-<div id="flexwrap">
+<div id="flexwrap" layout:fragment="body">
     <header>
-        <div th:replace="fragments/homelink :: homelink"></div>
+        <div th:replace="~{fragments/homelink :: homelink}"></div>
         <div id="rightcorner">
-            <div th:replace="fragments/links :: links"></div>
+            <div th:replace="~{fragments/links} :: links"></div>
             <div id="headerlogo">
                 <img th:src="${event.logourl}" id="eventLogo" width="100px">
             </div>
@@ -111,7 +111,7 @@
         </div>
     </main>
 
-    <footer th:replace="fragments/links :: links"></footer>
+    <footer th:insert="~{fragments/links :: links}"></footer>
 </div>
 </body>
 </html>
