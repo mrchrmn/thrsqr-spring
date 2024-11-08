@@ -6,7 +6,7 @@
     <li><a href="/reset/user">[[${TEXTS.resetUserData}]]</a></li>
     <li><a href="/legal">[[${TEXTS.legal.link}]]</a></li>
     <li class="unsubscribeAll"></li>
-    <li th:if="${superuser === true}"><a href="/superuser/logout">Log out</a></li>
+    <li th:if="${superuser == true}"><a href="/superuser/logout">Log out</a></li>
 </ul>
 </body>
 </html>
