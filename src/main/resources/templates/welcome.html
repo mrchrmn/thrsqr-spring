@@ -11,15 +11,15 @@
 
 <body>
 <main layout:fragment="main">
-    <h2 th:text="${TEXTS.claim}"></h2>
+    <h2>[[${TEXTS.claim}]]</h2>
     <h3 th:utext="${TEXTS.benefits}"></h3>
 
     <a href="/event/new">
-        <button class="btn" th:text="${TEXTS.setup}"></button>
+        <button class="btn">[[${TEXTS.setup}]]</button>
     </a>
 
     <ol>
-        <li th:each="step : ${TEXTS.steps}" th:text="${step}"></li>
+        <li th:each="step : ${TEXTS.steps}">[[${step}]]</li>
     </ol>
 </main>
 </body>

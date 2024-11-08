@@ -2,9 +2,9 @@
 <html lang="en-UK" xmlns:th="http://www.thymeleaf.org">
 <body>
 <ul class="links" th:fragment="links">
-    <li><a href="/change-language" th:text="${TEXTS.changeLanguage}"></a></li>
-    <li><a href="/reset/user" th:text="${TEXTS.resetUserData}"></a></li>
-    <li><a href="/legal" th:text="${TEXTS.legal.link}"></a></li>
+    <li><a href="/change-language">[[${TEXTS.changeLanguage}]]</a></li>
+    <li><a href="/reset/user">[[${TEXTS.resetUserData}]]</a></li>
+    <li><a href="/legal">[[${TEXTS.legal.link}]]</a></li>
     <li class="unsubscribeAll"></li>
     <li th:if="${superuser === true}"><a href="/superuser/logout">Log out</a></li>
 </ul>
