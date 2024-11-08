@@ -8,6 +8,9 @@ import org.springframework.boot.runApplication
 class ThrsqrSpringApplication
 
 fun main(args: Array<String>) {
-    dotenv()
+    val dotenv = dotenv()
+    dotenv.entries().forEach { entry ->
+        System.setProperty(entry.key, entry.value)
+    }
     runApplication<ThrsqrSpringApplication>(*args)
 }
