@@ -1,4 +1,4 @@
-package dev.hrmn.thrsqrspring.interfaces.controller
+package dev.hrmn.thrsqrspring.interfaces.web
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
