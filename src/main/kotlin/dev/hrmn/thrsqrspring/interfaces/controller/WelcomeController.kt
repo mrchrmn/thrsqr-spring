@@ -1,6 +1,5 @@
 package dev.hrmn.thrsqrspring.interfaces.controller
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.springframework.stereotype.Controller
@@ -21,7 +20,7 @@ class WelcomeController {
         return "welcome"
     }
 
-    private fun readTextsJson(): JsonNode {
+    private fun readTextsJson(): Map<String, Map<String, Map<String, Any>>> {
         val path = Paths.get("src/main/resources/locale/texts.json")
         val json = String(Files.readAllBytes(path))
         val mapper = jacksonObjectMapper()
