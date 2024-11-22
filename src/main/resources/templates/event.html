@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-UK" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/skeleton}">
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/skeleton}">
 
 <head>
     <!-- Page-specific title -->
@@ -42,23 +42,23 @@
 
         <div id="info">
             <h1>[[${event.title}]]</h1>
-            <h2>[[${TEXTS.eventEvery}]] <span id="eventDay"></span> [[${TEXTS.eventAt}]] <span id="eventTime"></span> <span class="smaller" id="localTimezone"></span></h2>
+            <h2>[[#{eventEvery}]] <span id="eventDay"></span> [[#{eventAt}]] <span id="eventTime"></span> <span class="smaller" id="localTimezone"></span></h2>
             <p>[[${event.info}]]</p>
             <div id="subscriptions"></div>
         </div>
 
         <div id="form">
-            <h3 th:data-previouseventtime="${previousEventTime}">[[${TEXTS.nextTime}]] <span id="nextDate"></span>.</h3>
+            <h3 th:data-previouseventtime="${previousEventTime}">[[#{nextTime}]] <span id="nextDate"></span>.</h3>
             <div id="responsePeek">
                 <h4 th:if="${going > 0 || notGoing > 0}">
-                    <a th:if="${going > 0}" class="thr-green" href="#">[[${TEXTS.there}]] - [[${going}]]</a>
+                    <a th:if="${going > 0}" class="thr-green" href="#">[[#{there}]] - [[${going}]]</a>
                     <span th:if="${going > 0 && notGoing > 0}"> | </span>
-                    <a th:if="${notGoing > 0}" class="sqr-red" href="#">[[${TEXTS.square}]] - [[${notGoing}]]</a>
+                    <a th:if="${notGoing > 0}" class="sqr-red" href="#">[[#{square}]] - [[${notGoing}]]</a>
                 </h4>
-                <h4 th:if="${going == 0 && notGoing == 0}">[[${TEXTS.thereOrSquare}]]</h4>
+                <h4 th:if="${going == 0 && notGoing == 0}">[[#{thereOrSquare}]]</h4>
             </div>
 
-            <h4 id="thereOrSquare">[[${TEXTS.thereOrSquare}]]</h4>
+            <h4 id="thereOrSquare">[[#{thereOrSquare}]]</h4>
             <form th:action="@{/event/${event.id}}" method="post">
                 <dl>
                     <dt>
@@ -69,26 +69,26 @@
                     </dd>
 
                     <dt>
-                        <label class="bold-text" for="comment">[[${TEXTS.comment}]] (optional)</label>
+                        <label class="bold-text" for="comment">[[#{comment}]] (optional)</label>
                     </dt>
                     <dd>
-                        <textarea rows="3" maxlength="150" id="comment" name="comment" th:placeholder="${TEXTS.comment}"></textarea>
+                        <textarea rows="3" maxlength="150" id="comment" name="comment" th:placeholder="#{comment}"></textarea>
                     </dd>
 
                     <dt>
-                        <label class="bold-text">[[${TEXTS.illBe}]]</label>
+                        <label class="bold-text">[[#{illBe}]]</label>
                     </dt>
                     <dd id="buttons">
-                        <button class="btn-thr" th:formaction="@{/event/${event.id}/1}">[[${TEXTS.there}]]</button>
-                        <button class="btn-sqr" th:formaction="@{/event/${event.id}/0}">[[${TEXTS.square}]]</button>
+                        <button class="btn-thr" th:formaction="@{/event/${event.id}/1}">[[#{there}]]</button>
+                        <button class="btn-sqr" th:formaction="@{/event/${event.id}/0}">[[#{square}]]</button>
                     </dd>
                 </dl>
             </form>
-            <p class="smaller" th:if="${going > 0 || notGoing > 0}">[[${TEXTS.howToRemove}]]</p>
+            <p class="smaller" th:if="${going > 0 || notGoing > 0}">[[#{howToRemove}]]</p>
         </div>
 
         <div id="responses">
-            <h2 id="there" class="thr-green" th:if="${going > 0}">[[${TEXTS.there}]] - [[${going}]]</h2>
+            <h2 id="there" class="thr-green" th:if="${going > 0}">[[#{there}]] - [[${going}]]</h2>
             <div th:each="response : ${responses}" th:if="${response.there}">
                 <form th:action="@{/event/${event.id}/remove/${response.part_id}}" method="post" class="delete">
                     <p>
@@ -98,7 +98,7 @@
                 </form>
             </div>
 
-            <h2 id="square" class="sqr-red" th:if="${notGoing > 0}">[[${TEXTS.square}]] - [[${notGoing}]]</h2>
+            <h2 id="square" class="sqr-red" th:if="${notGoing > 0}">[[#{square}]] - [[${notGoing}]]</h2>
             <div th:each="response : ${responses}" th:if="${!response.there}">
                 <form th:action="@{/event/${event.id}/remove/${response.part_id}}" method="post" class="delete">
                     <p>

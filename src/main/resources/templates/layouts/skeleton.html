@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-UK" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
     <meta charset="UTF-8">
@@ -21,7 +21,7 @@
     <title>ThrSqr - Will you be There or be Square?</title>
 </head>
 
-<body data-language="${language}">
+<body th:data-language="${#locale.language}">
 
 <!-- Page-specific body content -->
 <div layout:fragment="body"></div>

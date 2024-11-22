@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en-UK" xmlns:th="http://www.thymeleaf.org">
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <body>
 <ul class="links" th:fragment="links">
-    <li><a href="/change-language">[[${TEXTS.changeLanguage}]]</a></li>
-    <li><a href="/reset/user">[[${TEXTS.resetUserData}]]</a></li>
-    <li><a href="/legal">[[${TEXTS.legal.link}]]</a></li>
+    <li>
+        <a th:href="@{|${currentURL}?lang=${#locale.language == 'en' ? 'de' : 'en'}|}">
+            [[#{changeLanguage}]]
+        </a>
+    </li>
+    <li><a href="/reset/user">[[#{resetUserData}]]</a></li>
+    <li><a href="/legal">[[#{legal.link}]]</a></li>
     <li class="unsubscribeAll"></li>
     <li th:if="${superuser == true}"><a href="/superuser/logout">Log out</a></li>
 </ul>

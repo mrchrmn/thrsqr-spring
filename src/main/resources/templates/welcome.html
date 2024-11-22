@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-UK" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/header-footer}">
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/header-footer}">
 
 <head>
     <!-- Page-specific stylesheets -->
@@ -11,15 +11,15 @@
 
 <body>
 <main layout:fragment="main">
-    <h2>[[${TEXTS.claim}]]</h2>
-    <h3 th:utext="${TEXTS.benefits}"></h3>
+    <h2>[[#{claim}]]</h2>
+    <h3 th:utext="#{benefits}"></h3>
 
     <a href="/event/new">
-        <button class="btn">[[${TEXTS.setup}]]</button>
+        <button class="btn">[[#{setup}]]</button>
     </a>
 
     <ol>
-        <li th:each="step : ${TEXTS.steps}">[[${step}]]</li>
+        <li th:each="i : ${#numbers.sequence(0, 4)}" th:text="${#messages.msg('steps.' + i)}"></li>
     </ol>
 </main>
 </body>
