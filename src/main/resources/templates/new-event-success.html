@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/header-footer}">
+
+<head>
+    <title>[[${eventTitle}]] | ThrSqr</title>
+    <link rel="stylesheet" href="/stylesheets/success.css" th:href="@{/stylesheets/success.css}">
+</head>
+
+<body>
+<main layout:fragment="main">
+    <h2 th:text="${eventTitle}"></h2>
+    <h3 th:text="#{shareLink}"></h3>
+
+    <p>
+        <a th:href="@{'/e/' + ${eventCode}}" th:text="${origin + '/e/' + eventCode}"></a>
+    </p>
+
+    <h4>[[#{pleaseNote}]]</h4>
+    <ul th:utext="#{caveats}"></ul>
+
+    <h4>[[#{editEventHeading}]]</h4>
+    <p>[[#{editEventLink}]]</p>
+    <p>
+        <a th:href="@{'/event/' + ${eventCode} + '/edit'}" th:text="${origin + '/event/' + eventCode + '/edit'}"></a>
+    </p>
+
+    <h3>
+        <a th:href="@{'/event/' + ${eventCode}}">[[#{goToEvent}]]</a>
+    </h3>
+</main>
+</body>
+</html>
