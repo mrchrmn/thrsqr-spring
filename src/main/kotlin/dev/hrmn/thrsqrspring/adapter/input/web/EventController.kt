@@ -1,16 +1,24 @@
 package dev.hrmn.thrsqrspring.adapter.input.web
 
+import dev.hrmn.thrsqrspring.adapter.input.web.dto.NewEventForm
+import dev.hrmn.thrsqrspring.application.port.input.EventController
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 @RequestMapping("/event")
-class EventController {
+class EventController: EventController {
     @GetMapping("/new")
-    fun newEvent(model: Model): String {
-        model.addAttribute("eventCode", 1234)
+    override fun displayNewEventForm(model: Model): String {
         return "new-event"
+    }
+
+    @PostMapping("/new")
+    override fun createNewEvent(@ModelAttribute newEventForm: NewEventForm, model: Model) :String {
+        return "welcome"
     }
 }
