@@ -1,6 +1,6 @@
 @file:Suppress("ktlint:standard:no-wildcard-imports")
 
-package dev.hrmn.thrsqrspring.interfaces.web.common
+package dev.hrmn.thrsqrspring.configuration
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

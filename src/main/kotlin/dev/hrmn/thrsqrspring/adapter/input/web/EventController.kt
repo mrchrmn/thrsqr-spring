@@ -1,4 +1,4 @@
-package dev.hrmn.thrsqrspring.interfaces.web
+package dev.hrmn.thrsqrspring.adapter.input.web
 
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model

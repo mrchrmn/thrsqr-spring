@@ -1,4 +1,4 @@
-package dev.hrmn.thrsqrspring.interfaces.web.common
+package dev.hrmn.thrsqrspring.adapter.input.web
 
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.web.bind.annotation.ControllerAdvice
