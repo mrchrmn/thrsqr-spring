@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 class EventController {
     @GetMapping("/new")
     fun newEvent(model: Model): String {
-        model.addAttribute("eventId", 1234)
+        model.addAttribute("eventCode", 1234)
         return "new-event"
     }
 }
