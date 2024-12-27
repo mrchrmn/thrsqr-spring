@@ -28,7 +28,11 @@ class EventController(val eventService: EventService): EventController {
             return "welcome"
         }
 
-        eventService.createNewEvent(newEventForm)
+        val newEvent = eventService.createNewEvent(newEventForm)
+
+        model.addAttribute("eventTitle", newEvent.title)
+        model.addAttribute("eventCode", newEvent.code)
+
         return "new-event-success"
     }
 }
