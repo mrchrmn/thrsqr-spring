@@ -4,8 +4,10 @@ import dev.hrmn.thrsqrspring.adapter.input.web.dto.NewEventForm
 import dev.hrmn.thrsqrspring.adapter.output.EventRepository
 import dev.hrmn.thrsqrspring.application.port.input.EventService
 import dev.hrmn.thrsqrspring.domain.model.Event
+import org.springframework.stereotype.Service
 import java.time.LocalTime
 
+@Service
 class EventService(private val eventRepository: EventRepository) : EventService {
     override fun createNewEvent(newEventForm: NewEventForm) {
         val code = generateEventCode()
