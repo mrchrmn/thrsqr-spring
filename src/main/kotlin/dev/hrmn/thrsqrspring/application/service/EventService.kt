@@ -9,7 +9,7 @@ import java.time.LocalTime
 
 @Service
 class EventService(private val eventRepository: EventRepository) : EventService {
-    override fun createNewEvent(newEventForm: NewEventForm) {
+    override fun createNewEvent(newEventForm: NewEventForm): Event {
         val code = generateEventCode()
         val event = Event(
             code = code,
@@ -21,7 +21,7 @@ class EventService(private val eventRepository: EventRepository) : EventService 
             logoURL = newEventForm.eventLogoURL
         )
 
-        eventRepository.save(event)
+        return eventRepository.save(event)
     }
 
     private fun generateEventCode(): String {
