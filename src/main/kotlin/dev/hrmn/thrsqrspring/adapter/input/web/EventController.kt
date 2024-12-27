@@ -2,6 +2,7 @@ package dev.hrmn.thrsqrspring.adapter.input.web
 
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.NewEventForm
 import dev.hrmn.thrsqrspring.application.port.input.EventController
+import dev.hrmn.thrsqrspring.application.service.EventService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 @RequestMapping("/event")
-class EventController: EventController {
+class EventController(val eventService: EventService): EventController {
     @GetMapping("/new")
     override fun displayNewEventForm(model: Model): String {
         return "new-event"
@@ -27,6 +28,7 @@ class EventController: EventController {
             return "welcome"
         }
 
+        eventService.createNewEvent(newEventForm)
         return "new-event-success"
     }
 }
