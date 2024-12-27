@@ -8,8 +8,8 @@
 
 <body>
 <main layout:fragment="main">
-    <h2 th:text="${eventTitle}"></h2>
-    <h3 th:text="#{shareLink}"></h3>
+    <h2>[[${eventTitle}]]</h2>
+    <h3>[[#{shareLink}]]</h3>
 
     <p>
         <a th:href="@{'/e/' + ${eventCode}}" th:text="${origin + '/e/' + eventCode}"></a>
