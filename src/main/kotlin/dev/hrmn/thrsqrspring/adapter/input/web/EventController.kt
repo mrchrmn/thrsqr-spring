@@ -19,6 +19,14 @@ class EventController: EventController {
 
     @PostMapping("/new")
     override fun createNewEvent(@ModelAttribute newEventForm: NewEventForm, model: Model) :String {
-        return "welcome"
+        // disregard form if invisible fields email or message are filled.
+        newEventForm.email?.let{
+            return "welcome"
+        }
+        newEventForm.message?.let{
+            return "welcome"
+        }
+
+        return "new-event-success"
     }
 }
