@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface JpaEventRepository : JpaRepository<Event, Long>
+interface JpaEventRepository : JpaRepository<Event, Long> {
+    fun findByCode(code: String): Event?
+}

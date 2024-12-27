@@ -9,4 +9,8 @@ class EventRepository(private val jpaEventRepository: JpaEventRepository) : Even
     override fun save(event: Event): Event {
         return jpaEventRepository.save(event)
     }
+
+    override fun findByCode(code: String): Event? {
+        return jpaEventRepository.findByCode(code)
+    }
 }
