@@ -11,7 +11,7 @@ import java.time.ZonedDateTime
 class Event(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Long,
+    val id: Long = 0,
 
     val code: String,
     val title: String,
