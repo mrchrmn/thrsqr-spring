@@ -7,6 +7,6 @@ data class NewEventForm(
     val eventTimeZone: String,
     val eventInfo: String?,
     val eventLogoURL: String,
-    val email: String?,
-    val message: String?
+    val email: String,
+    val message: String
 )

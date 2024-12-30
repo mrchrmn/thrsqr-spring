@@ -20,12 +20,9 @@ class EventController(val eventService: EventService): EventController {
 
     @PostMapping("/new")
     override fun createNewEvent(@ModelAttribute newEventForm: NewEventForm, model: Model) :String {
-        // disregard form if invisible fields email or message are filled.
-        newEventForm.email?.let{
-            return "welcome"
-        }
-        newEventForm.message?.let{
-            return "welcome"
+        // Honeypot: disregard form if invisible fields email or message are filled.
+        if (newEventForm.email.isNotBlank() || newEventForm.message.isNotBlank()) {
+            return "redirect:/"
         }
 
         val newEvent = eventService.createNewEvent(newEventForm)
