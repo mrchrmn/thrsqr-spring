@@ -1,5 +1,6 @@
 package dev.hrmn.thrsqrspring.adapter.output.persistence
 
+import dev.hrmn.thrsqrspring.adapter.output.persistence.jpa.JpaEventRepository
 import dev.hrmn.thrsqrspring.application.port.output.EventRepository
 import dev.hrmn.thrsqrspring.domain.model.Event
 import org.springframework.stereotype.Repository
