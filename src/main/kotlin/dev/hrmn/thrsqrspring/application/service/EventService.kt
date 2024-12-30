@@ -1,7 +1,7 @@
 package dev.hrmn.thrsqrspring.application.service
 
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.NewEventForm
-import dev.hrmn.thrsqrspring.adapter.output.EventRepository
+import dev.hrmn.thrsqrspring.adapter.output.persistence.EventRepository
 import dev.hrmn.thrsqrspring.application.port.input.EventService
 import dev.hrmn.thrsqrspring.domain.model.Event
 import org.springframework.stereotype.Service

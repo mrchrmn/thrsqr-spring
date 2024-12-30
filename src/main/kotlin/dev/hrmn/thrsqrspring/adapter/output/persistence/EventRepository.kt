@@ -1,4 +1,4 @@
-package dev.hrmn.thrsqrspring.adapter.output
+package dev.hrmn.thrsqrspring.adapter.output.persistence
 
 import dev.hrmn.thrsqrspring.application.port.output.EventRepository
 import dev.hrmn.thrsqrspring.domain.model.Event

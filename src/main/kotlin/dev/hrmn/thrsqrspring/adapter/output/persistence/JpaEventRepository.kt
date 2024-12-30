@@ -1,4 +1,4 @@
-package dev.hrmn.thrsqrspring.adapter.output
+package dev.hrmn.thrsqrspring.adapter.output.persistence
 
 import dev.hrmn.thrsqrspring.domain.model.Event
 import org.springframework.data.jpa.repository.JpaRepository
