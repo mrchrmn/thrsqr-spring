@@ -78,7 +78,7 @@ class EventService(
 
         if (now.isAfter(previousEventTime.plusMinutes(WAIT_TIME_IN_MINUTES)) &&
                 lastUpdate.isBefore(previousEventTime.plusMinutes(WAIT_TIME_IN_MINUTES))) {
-            responseRepository.deleteResponsesForEvent(event)
+            responseRepository.deleteByEvent(event)
             eventRepository.updateLastUpdateToNow(event)
         }
     }

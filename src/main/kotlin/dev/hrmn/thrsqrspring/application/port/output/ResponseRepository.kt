@@ -5,5 +5,5 @@ import dev.hrmn.thrsqrspring.domain.model.Event
 
 interface ResponseRepository {
     fun findByEvent(event: Event): List<ResponseDto>
-    fun deleteResponsesForEvent(event: Event)
+    fun deleteByEvent(event: Event)
 }

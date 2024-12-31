@@ -12,7 +12,7 @@ class ResponseRepository(private val jpaResponseRepository: JpaResponseRepositor
         return jpaResponseRepository.findByEventCode(event.code)
     }
 
-    override fun deleteResponsesForEvent(event: Event) {
+    override fun deleteByEvent(event: Event) {
         jpaResponseRepository.deleteByEvent(event)
     }
 }
