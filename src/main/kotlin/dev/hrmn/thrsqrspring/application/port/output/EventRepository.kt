@@ -5,4 +5,5 @@ import dev.hrmn.thrsqrspring.domain.model.Event
 interface EventRepository {
     fun save(event: Event): Event
     fun findByCode(code: String): Event?
+    fun updateLastUpdateToNow(event: Event)
 }

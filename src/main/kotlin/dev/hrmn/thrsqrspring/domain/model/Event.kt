@@ -5,7 +5,8 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import java.time.LocalTime
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 @Entity
 class Event(
@@ -19,6 +20,6 @@ class Event(
     val eventTime: LocalTime,
     val timeZone: String,
     val info: String? = null,
-    val lastUpdate: ZonedDateTime? = ZonedDateTime.now(),
+    val lastUpdate: OffsetDateTime = OffsetDateTime.now(ZoneOffset.UTC),
     val logoURL: String? = null
 )

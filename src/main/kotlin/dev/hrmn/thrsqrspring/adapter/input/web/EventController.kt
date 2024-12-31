@@ -5,10 +5,7 @@ import dev.hrmn.thrsqrspring.application.port.input.EventController
 import dev.hrmn.thrsqrspring.application.service.EventService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/event")
@@ -31,5 +28,19 @@ class EventController(val eventService: EventService): EventController {
         model.addAttribute("eventCode", newEvent.code)
 
         return "new-event-success"
+    }
+
+    @GetMapping("/{eventCode}")
+    override fun displayEvent(@PathVariable eventCode: String, model: Model): String {
+        val eventInfo = eventService.getEventInfoByEventCode(eventCode)
+
+        model.addAttribute("event", eventInfo.event)
+        model.addAttribute("responses", eventInfo.responses)
+        model.addAttribute("icons", eventInfo.icons)
+        model.addAttribute("previousEventTime", eventInfo.previousEventTime)
+        model.addAttribute("going", eventInfo.going)
+        model.addAttribute("notGoing", eventInfo.notGoing)
+
+        return "event"
     }
 }

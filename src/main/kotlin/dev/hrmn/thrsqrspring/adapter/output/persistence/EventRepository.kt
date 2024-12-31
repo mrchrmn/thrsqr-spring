@@ -14,4 +14,8 @@ class EventRepository(private val jpaEventRepository: JpaEventRepository) : Even
     override fun findByCode(code: String): Event? {
         return jpaEventRepository.findByCode(code)
     }
+
+    override fun updateLastUpdateToNow(event: Event) {
+        jpaEventRepository.updateLastUpdateToNow(event.id)
+    }
 }
