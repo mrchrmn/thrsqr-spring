@@ -25,6 +25,8 @@ class EventService(
 ) : EventService {
     companion object {
         const val WAIT_TIME_IN_MINUTES: Long = 1 * 60
+        const val DEFAULT_LOGO_URL = "/images/thrsqrlogo-250.png"
+        val BUCKET = System.getenv("S3_BUCKET_NAME")
     }
 
     override fun createNewEvent(newEventForm: NewEventForm): Event {
@@ -52,11 +54,13 @@ class EventService(
 
         val icons = getIcons(event)
 
+        val logoURL = getLogoUrl(event)
+
         val going = responses.count { it.there }
         val notGoing = responses.count { !it.there }
 
         return EventInfoDto(
-            event, responses, icons, getPreviousEventTime(event), going, notGoing
+            event, responses, icons, logoURL, getPreviousEventTime(event), going, notGoing
         )
     }
 
@@ -123,11 +127,32 @@ class EventService(
         responses.forEach { it.username = capitalize(it.username) }
     }
 
-    private fun getEventCopyWithLogoUrl(event: Event): Event {
-        TODO("")
+    private fun getIcons(event: Event): Map<Int, String> {
+        val logoURL = getLogoUrl(event)
+
+        val sizes = listOf(144,192,256,512)
+        val icons = sizes.associateWith { DEFAULT_LOGO_URL }.toMutableMap()
+
+        if (logoURL.startsWith("https")) {
+            icons.keys.forEach { key ->
+                icons[key] = getResizedLogoURL(BUCKET, event.code, key)
+            }
+        }
+
+        return icons
     }
 
-    private fun getResizedLogoUrl(bucket: String, code: String, size: Int): String {
+    private fun getLogoUrl(event: Event): String {
+        val logoURL = event.logoURL
+
+        return if (!logoURL.isNullOrBlank() && logoURL.startsWith("https")) {
+            getResizedLogoURL(BUCKET, event.code, 500)
+        } else {
+            DEFAULT_LOGO_URL
+        }
+    }
+
+    private fun getResizedLogoURL(bucket: String, code: String, size: Int): String {
         val reqBody = mapOf(
             "bucket" to bucket,
             "key" to "logos/$code-logo",

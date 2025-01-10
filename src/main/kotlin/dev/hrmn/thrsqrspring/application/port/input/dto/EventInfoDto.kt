@@ -8,6 +8,7 @@ data class EventInfoDto(
     val event: Event,
     val responses: List<ResponseDto>,
     val icons: Map<Int, String>,
+    val logoURL: String,
     val previousEventTime: OffsetDateTime,
     val going: Int,
     val notGoing: Int
