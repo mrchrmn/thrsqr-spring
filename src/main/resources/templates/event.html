@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/skeleton}">
+<html lang="" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/skeleton}">
 
 <head>
     <!-- Page-specific title -->
@@ -28,21 +29,22 @@
     <header>
         <div th:replace="~{fragments/homelink :: homelink}"></div>
         <div id="rightcorner">
-            <div th:replace="~{fragments/links} :: links"></div>
+            <div th:replace="~{fragments/links :: links}"></div>
             <div id="headerlogo">
-                <img th:src="${event.logourl}" id="eventLogo" width="100px">
+                <img th:src="${event.logourl}" id="eventLogo" width="100px" alt="event logo">
             </div>
         </div>
     </header>
 
     <main>
         <div id="logo">
-            <img th:src="${event.logourl}" id="eventLogo" width="250px">
+            <img th:src="${event.logourl}" id="eventLogo" width="250px" alt="event logo">
         </div>
 
         <div id="info">
             <h1>[[${event.title}]]</h1>
-            <h2>[[#{eventEvery}]] <span id="eventDay"></span> [[#{eventAt}]] <span id="eventTime"></span> <span class="smaller" id="localTimezone"></span></h2>
+            <h2>[[#{eventEvery}]] <span id="eventDay"></span> [[#{eventAt}]] <span id="eventTime"></span> <span
+                    class="smaller" id="localTimezone"></span></h2>
             <p>[[${event.info}]]</p>
             <div id="subscriptions"></div>
         </div>
@@ -65,14 +67,16 @@
                         <label class="bold-text" for="username">Name</label>
                     </dt>
                     <dd>
-                        <input type="text" id="username" name="username" placeholder="Name" th:value="${username}" maxlength="50" required>
+                        <input type="text" id="username" name="username" placeholder="Name" th:value="${username}"
+                               maxlength="50" required>
                     </dd>
 
                     <dt>
                         <label class="bold-text" for="comment">[[#{comment}]] (optional)</label>
                     </dt>
                     <dd>
-                        <textarea rows="3" maxlength="150" id="comment" name="comment" th:placeholder="#{comment}"></textarea>
+                        <textarea rows="3" maxlength="150" id="comment" name="comment"
+                                  th:placeholder="#{comment}"></textarea>
                     </dd>
 
                     <dt>
