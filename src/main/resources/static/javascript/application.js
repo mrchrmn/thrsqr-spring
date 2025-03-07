@@ -3,13 +3,13 @@
 /* eslint-disable max-lines-per-function */
 "use strict";
 
-import { texts } from "/locale/texts.mjs";
+import {texts} from "/locale/texts.mjs";
 
 let lang;
 let TEXTS;
 
 function getNext(date) {
-  let nextDate = new Date (date.valueOf());
+  let nextDate = new Date(date.valueOf());
   nextDate.setUTCDate(nextDate.getUTCDate() + 7);
   return nextDate;
 }
@@ -28,21 +28,25 @@ async function replaceTimeDate() {
     let now = new Date();
 
     let previousEventTime = nextDateSpan.parentElement.dataset.previouseventtime;
-    let previousDate = new Date(Number(previousEventTime));
+    let previousDate = new Date(previousEventTime);
     let nextDate = getNext(previousDate);
 
     let dstDifference = now.getTimezoneOffset() - nextDate.getTimezoneOffset();
     nextDate = new Date(nextDate.valueOf() - (dstDifference * 60 * 1000));
 
-    eventTimeSpan.innerHTML = nextDate.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false });
-    eventDaySpan.innerHTML = nextDate.toLocaleDateString(locale, { weekday: "long" });
+    eventTimeSpan.innerHTML = nextDate.toLocaleTimeString(locale, {hour: '2-digit', minute: '2-digit', hour12: false});
+    eventDaySpan.innerHTML = nextDate.toLocaleDateString(locale, {weekday: "long"});
 
-    if ( (nextDate.getUTCDay() === now.getUTCDay()) &&
-         ( (nextDate.valueOf() - now.valueOf() < ONEDAYINMS) ||
-           (nextDate.valueOf() - now.valueOf() > SIXDAYS23HOURSINMS) ) ) {
+    if ((nextDate.getUTCDay() === now.getUTCDay()) &&
+      ((nextDate.valueOf() - now.valueOf() < ONEDAYINMS) ||
+        (nextDate.valueOf() - now.valueOf() > SIXDAYS23HOURSINMS))) {
       nextDateSpan.innerHTML = TEXTS.today;
     } else {
-      nextDateSpan.innerHTML = TEXTS.on + " " + nextDate.toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
+      nextDateSpan.innerHTML = TEXTS.on + " " + nextDate.toLocaleDateString(locale, {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      });
     }
 
     if (lang === "en") {
@@ -51,14 +55,14 @@ async function replaceTimeDate() {
   }
 }
 
-async function addTimezoneAbbreviation () {
+async function addTimezoneAbbreviation() {
   let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   let abbrev;
 
   try {
     let response = await fetch("/timezone-abbrev", {
       method: "POST",
-      body: JSON.stringify({ timezone }),
+      body: JSON.stringify({timezone}),
       headers: {
         "content-type": "application/json"
       }
