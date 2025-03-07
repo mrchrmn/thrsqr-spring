@@ -12,6 +12,6 @@ interface JpaEventRepository : JpaRepository<Event, Long> {
     fun findByCode(code: String): Event?
 
     @Modifying
-    @Query("UPDATE Event e SET e.lastUpdate = now() WHERE e.id = :eventId")
+    @Query("UPDATE Event e SET e.lastUpdate = CURRENT_TIMESTAMP WHERE e.id = :eventId")
     fun updateLastUpdateToNow(@Param("eventId") eventId: Long)
 }
