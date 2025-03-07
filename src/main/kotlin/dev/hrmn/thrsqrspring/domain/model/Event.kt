@@ -9,7 +9,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 @Entity
-class Event(
+data class Event(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Long = 0,
