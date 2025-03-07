@@ -5,14 +5,18 @@ import dev.hrmn.thrsqrspring.domain.model.Event
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.parseIsoString
 
 object TimeUtils {
     fun getPreviousEventTime(event: Event, timezoneRepository: TimezoneRepository): OffsetDateTime {
         val eventTimezone = timezoneRepository.findByName(event.timeZone)
             ?: throw IllegalArgumentException("Requested time zone not found.")
 
-        val offsetHours = eventTimezone.utcOffset.inWholeHours.toInt()
-        val offSetMinutes = (eventTimezone.utcOffset.inWholeMinutes % 60).toInt()
+        val utcOffset = parseDurationString(eventTimezone.utcOffset)
+
+        val offsetHours = utcOffset.inWholeHours.toInt()
+        val offSetMinutes = (utcOffset.inWholeMinutes % 60).toInt()
 
         var eventHours = event.eventTime.hour - offsetHours
         val eventMinutes = event.eventTime.minute - offSetMinutes
@@ -26,7 +30,7 @@ object TimeUtils {
         val nowHours = now.hour
         val nowMinutes = now.minute
 
-        var dateDelta = (nowDay - eventDay +7) % 7
+        var dateDelta = (nowDay - eventDay + 7) % 7
 
         if (dateDelta == 0) {
             if (nowHours < eventHours || (nowHours == eventHours && nowMinutes < eventMinutes)) {
@@ -41,5 +45,13 @@ object TimeUtils {
             .truncatedTo(ChronoUnit.MINUTES)
 
         return date
+    }
+
+    private fun parseDurationString(durationString: String): Duration {
+        val parts = durationString.split(":")
+        val hours = parts[0].toLong()
+        val minutes = parts[1].toLong()
+        val seconds = parts[2].toLong()
+        return parseIsoString("PT${hours}H${minutes}M${seconds}S")
     }
 }
