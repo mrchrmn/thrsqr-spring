@@ -7,7 +7,7 @@ import jakarta.persistence.Id
 import java.time.ZonedDateTime
 
 @Entity
-class Participant(
+data class Participant(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Long,

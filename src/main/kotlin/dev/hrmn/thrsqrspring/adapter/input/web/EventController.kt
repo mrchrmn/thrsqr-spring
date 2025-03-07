@@ -8,15 +8,15 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 
 @Controller
-@RequestMapping("/event")
-class EventController(val eventService: EventService): EventController {
+@RequestMapping("/event", "/e")
+class EventController(val eventService: EventService) : EventController {
     @GetMapping("/new")
     override fun displayNewEventForm(model: Model): String {
         return "new-event"
     }
 
     @PostMapping("/new")
-    override fun createNewEvent(@ModelAttribute newEventForm: NewEventForm, model: Model) :String {
+    override fun createNewEvent(@ModelAttribute newEventForm: NewEventForm, model: Model): String {
         // Honeypot: disregard form if invisible fields email or message are filled.
         if (newEventForm.email.isNotBlank() || newEventForm.message.isNotBlank()) {
             return "redirect:/"
