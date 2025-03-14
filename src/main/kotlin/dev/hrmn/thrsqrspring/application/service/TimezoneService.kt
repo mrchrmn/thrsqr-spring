@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service
 class TimezoneService(
     private val timezoneRepository: TimezoneRepository
 ) : TimezoneService {
+    private val timezoneAbbreviationCache = mutableMapOf<String, String>()
+
     override fun getTimezoneAbbreviation(name: String): String {
-        val timezone = timezoneRepository.findByName(name);
-        return timezone?.abbrev ?: ""
+        return timezoneAbbreviationCache.getOrPut(name) {
+            val timezone = timezoneRepository.findByName(name)
+            timezone?.abbrev ?: ""
+        }
     }
 }
