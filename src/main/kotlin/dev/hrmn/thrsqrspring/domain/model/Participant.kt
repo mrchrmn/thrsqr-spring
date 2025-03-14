@@ -10,7 +10,7 @@ import java.time.ZonedDateTime
 data class Participant(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Long,
+    val id: Long = 0,
 
     val username: String,
     val lastUpdate: ZonedDateTime = ZonedDateTime.now()
