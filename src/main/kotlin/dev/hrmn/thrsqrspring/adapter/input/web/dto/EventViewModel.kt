@@ -1,10 +1,10 @@
-package dev.hrmn.thrsqrspring.application.port.input.dto
+package dev.hrmn.thrsqrspring.adapter.input.web.dto
 
-import dev.hrmn.thrsqrspring.domain.dto.ResponseDto
+import dev.hrmn.thrsqrspring.adapter.output.persistence.dto.ResponseDto
 import dev.hrmn.thrsqrspring.domain.model.Event
 import java.time.OffsetDateTime
 
-data class EventInfoDto(
+data class EventViewModel(
     val event: Event,
     val responses: List<ResponseDto>,
     val icons: Map<Int, String>,

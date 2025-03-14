@@ -100,14 +100,14 @@
         </div>
 
         <div id="responses">
-            <form id="responseForm" action="/response/remove" method="post">
+            <form id="responseForm" action="/response/delete" method="post">
                 <input type="hidden" name="eventCode" th:value="${event.code}">
-                <input type="hidden" id="participantIdToRemove" name="participantId" value="">
+                <input type="hidden" id="responseId" name="responseId" value="">
 
                 <h2 id="there" class="thr-green" th:if="${going > 0}">[[#{there}]] - [[${going}]]</h2>
                 <div th:each="response : ${responses}" th:if="${response.there}">
                     <p>
-                        <a href="#" th:data-id="${response.participantId}">[[${response.username}]]</a>
+                        <a href="#" th:data-id="${response.id}">[[${response.username}]]</a>
                         <span class="smaller">[[${response.comment}]]</span>
                     </p>
                 </div>
@@ -115,7 +115,7 @@
                 <h2 id="square" class="sqr-red" th:if="${notGoing > 0}">[[#{square}]] - [[${notGoing}]]</h2>
                 <div th:each="response : ${responses}" th:if="${!response.there}">
                     <p>
-                        <a href="#" th:data-id="${response.participantId}">[[${response.username}]]</a>
+                        <a href="#" th:data-id="${response.id}">[[${response.username}]]</a>
                         <span class="smaller">[[${response.comment}]]</span>
                     </p>
                 </div>

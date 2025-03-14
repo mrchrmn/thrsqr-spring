@@ -2,7 +2,7 @@ package dev.hrmn.thrsqrspring.application.util
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import dev.hrmn.thrsqrspring.adapter.output.persistence.EventRepository
-import dev.hrmn.thrsqrspring.domain.dto.ResponseDto
+import dev.hrmn.thrsqrspring.adapter.output.persistence.dto.ResponseDto
 import dev.hrmn.thrsqrspring.domain.model.Event
 import org.springframework.util.StringUtils.capitalize
 
@@ -24,7 +24,7 @@ object EventUtils {
     fun getIcons(event: Event): Map<Int, String> {
         val logoURL = getLogoUrl(event)
 
-        val sizes = listOf(144,192,256,512)
+        val sizes = listOf(144, 192, 256, 512)
         val icons = sizes.associateWith { DEFAULT_LOGO_URL }.toMutableMap()
 
         if (logoURL.startsWith("https")) {

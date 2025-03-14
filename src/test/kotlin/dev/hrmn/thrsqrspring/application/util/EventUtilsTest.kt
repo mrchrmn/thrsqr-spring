@@ -1,7 +1,7 @@
 package dev.hrmn.thrsqrspring.application.util
 
 import dev.hrmn.thrsqrspring.adapter.output.persistence.EventRepository
-import dev.hrmn.thrsqrspring.domain.dto.ResponseDto
+import dev.hrmn.thrsqrspring.adapter.output.persistence.dto.ResponseDto
 import dev.hrmn.thrsqrspring.domain.model.Event
 import io.mockk.every
 import io.mockk.mockk
@@ -26,7 +26,15 @@ class EventUtilsTest {
 
     @Test
     fun `getIcons should return default icons`() {
-        val event = Event(code = "test", title = "Test Event", dayOfWeek = 1, eventTime = LocalTime.now(), timeZone = "UTC", info = "", logoURL = null)
+        val event = Event(
+            code = "test",
+            title = "Test Event",
+            dayOfWeek = 1,
+            eventTime = LocalTime.now(),
+            timeZone = "UTC",
+            info = "",
+            logoURL = null
+        )
         val icons = EventUtils.getIcons(event)
 
         assertEquals(4, icons.size)
@@ -35,7 +43,15 @@ class EventUtilsTest {
 
     @Test
     fun `getLogoUrl should return default logo URL if logoURL is null or blank`() {
-        val event = Event(code = "test", title = "Test Event", dayOfWeek = 1, eventTime = LocalTime.now(), timeZone = "UTC", info = "", logoURL = null)
+        val event = Event(
+            code = "test",
+            title = "Test Event",
+            dayOfWeek = 1,
+            eventTime = LocalTime.now(),
+            timeZone = "UTC",
+            info = "",
+            logoURL = null
+        )
         val logoURL = EventUtils.getLogoUrl(event)
 
         assertEquals(EventUtils.DEFAULT_LOGO_URL, logoURL)
