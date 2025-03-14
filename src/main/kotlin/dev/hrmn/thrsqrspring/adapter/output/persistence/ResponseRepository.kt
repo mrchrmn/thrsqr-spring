@@ -1,10 +1,9 @@
 package dev.hrmn.thrsqrspring.adapter.output.persistence
 
+import dev.hrmn.thrsqrspring.adapter.output.persistence.dto.ResponseDto
 import dev.hrmn.thrsqrspring.adapter.output.persistence.jpa.JpaResponseRepository
 import dev.hrmn.thrsqrspring.application.port.output.ResponseRepository
-import dev.hrmn.thrsqrspring.domain.dto.ResponseDto
 import dev.hrmn.thrsqrspring.domain.model.Event
-import dev.hrmn.thrsqrspring.domain.model.Participant
 import dev.hrmn.thrsqrspring.domain.model.Response
 import org.springframework.stereotype.Repository
 
@@ -18,11 +17,11 @@ class ResponseRepository(private val jpaResponseRepository: JpaResponseRepositor
         jpaResponseRepository.deleteByEvent(event)
     }
 
-    override fun deleteByEventAndParticipant(event: Event, participant: Participant) {
-        jpaResponseRepository.deleteByEventAndParticipant(event, participant)
+    override fun deleteById(id: Long) {
+        jpaResponseRepository.deleteById(id)
     }
 
-    override fun save(response: Response) {
-        jpaResponseRepository.save(response)
+    override fun save(response: Response): Response {
+        return jpaResponseRepository.save(response)
     }
 }

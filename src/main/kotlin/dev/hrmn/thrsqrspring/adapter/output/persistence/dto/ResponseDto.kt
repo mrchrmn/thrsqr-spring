@@ -1,7 +1,7 @@
-package dev.hrmn.thrsqrspring.domain.dto
+package dev.hrmn.thrsqrspring.adapter.output.persistence.dto
 
 data class ResponseDto(
-    val participantId: Long,
+    val id: Long,
     val there: Boolean,
     var username: String,
     val comment: String?

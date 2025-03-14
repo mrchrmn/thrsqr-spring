@@ -1,6 +1,6 @@
 package dev.hrmn.thrsqrspring.adapter.input.web
 
-import dev.hrmn.thrsqrspring.adapter.input.web.dto.RemoveResponseForm
+import dev.hrmn.thrsqrspring.adapter.input.web.dto.DeleteResponseForm
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.ResponseForm
 import dev.hrmn.thrsqrspring.application.port.input.ResponseController
 import org.springframework.stereotype.Controller
@@ -18,10 +18,10 @@ class ResponseController() : ResponseController {
         return "redirect:/event/${responseForm.eventCode}"
     }
 
-    @PostMapping("/remove")
-    override fun remove(@ModelAttribute removeResponseForm: RemoveResponseForm): String {
+    @PostMapping("/delete")
+    override fun delete(@ModelAttribute deleteResponseForm: DeleteResponseForm): String {
         // TODO: Remove response from database
 
-        return "redirect:/event/${removeResponseForm.eventCode}"
+        return "redirect:/event/${deleteResponseForm.eventCode}"
     }
 }
