@@ -17,7 +17,6 @@ interface JpaResponseRepository : JpaRepository<Response, Long> {
     )
     fun findDtoByEvent(@Param("event") event: Event): List<ResponseDto>
 
-    fun save(response: Response)
     fun deleteByEvent(event: Event)
     fun deleteByEventAndParticipant(event: Event, participant: Participant)
 }
