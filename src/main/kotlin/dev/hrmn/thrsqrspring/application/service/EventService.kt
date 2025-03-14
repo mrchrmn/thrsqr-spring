@@ -10,6 +10,7 @@ import dev.hrmn.thrsqrspring.application.util.EventUtils
 import dev.hrmn.thrsqrspring.application.util.TimeUtils
 import dev.hrmn.thrsqrspring.domain.model.Event
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -39,6 +40,7 @@ class EventService(
         return eventRepository.save(event)
     }
 
+    @Transactional
     override fun getEventInfoByEventCode(code: String): EventInfoDto {
         val event = eventRepository.findByCode(code) ?: throw IllegalArgumentException("Requested event not found")
 
@@ -63,7 +65,8 @@ class EventService(
         val now = OffsetDateTime.now(ZoneOffset.UTC)
 
         if (now.isAfter(previousEventTime.plusMinutes(WAIT_TIME_IN_MINUTES)) &&
-            lastUpdate.isBefore(previousEventTime.plusMinutes(WAIT_TIME_IN_MINUTES))) {
+            lastUpdate.isBefore(previousEventTime.plusMinutes(WAIT_TIME_IN_MINUTES))
+        ) {
             responseRepository.deleteByEvent(event)
             eventRepository.updateLastUpdateToNow(event)
         }
