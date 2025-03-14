@@ -45,7 +45,7 @@ class EventService(
         val event = eventRepository.findByCode(code) ?: throw IllegalArgumentException("Requested event not found")
 
         resetResponsesIfOutdated(event)
-        val responses = responseRepository.findByEvent(event)
+        val responses = responseRepository.findDtoByEvent(event)
         EventUtils.capitaliseUsernames(responses)
 
         val icons = EventUtils.getIcons(event)
