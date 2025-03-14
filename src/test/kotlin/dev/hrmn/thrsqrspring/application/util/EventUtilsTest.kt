@@ -60,8 +60,8 @@ class EventUtilsTest {
     @Test
     fun `capitaliseUsernames should capitalise usernames`() {
         val responses = listOf(
-            ResponseDto(username = "john", participantId = 1, comment = "", there = true),
-            ResponseDto(username = "doe", participantId = 2, comment = "", there = true)
+            ResponseDto(id = 1, username = "john", comment = "", there = true),
+            ResponseDto(id = 2, username = "doe", comment = "", there = true)
         )
         EventUtils.capitaliseUsernames(responses)
 
