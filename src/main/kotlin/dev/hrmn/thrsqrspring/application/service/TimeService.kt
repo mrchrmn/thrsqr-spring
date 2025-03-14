@@ -1,15 +1,29 @@
-package dev.hrmn.thrsqrspring.application.util
+package dev.hrmn.thrsqrspring.application.service
 
 import dev.hrmn.thrsqrspring.adapter.output.persistence.TimezoneRepository
+import dev.hrmn.thrsqrspring.application.port.input.TimeService
 import dev.hrmn.thrsqrspring.domain.model.Event
+import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.parseIsoString
 
-object TimeUtils {
-    fun getPreviousEventTime(event: Event, timezoneRepository: TimezoneRepository): OffsetDateTime {
+@Service
+class TimeService(
+    private val timezoneRepository: TimezoneRepository
+) : TimeService {
+    private val timezoneAbbreviationCache = mutableMapOf<String, String>()
+
+    override fun getTimezoneAbbreviation(name: String): String {
+        return timezoneAbbreviationCache.getOrPut(name) {
+            val timezone = timezoneRepository.findByName(name)
+            timezone?.abbrev ?: ""
+        }
+    }
+
+    override fun getPreviousEventTime(event: Event): OffsetDateTime {
         val eventTimezone = timezoneRepository.findByName(event.timeZone)
             ?: throw IllegalArgumentException("Requested time zone not found.")
 
