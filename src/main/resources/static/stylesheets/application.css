@@ -123,19 +123,6 @@ a:hover {
     color: #00a900;
 }
 
-#responses button {
-    border: none;
-    background: transparent url("../images/icon_delete.png") 0 3px no-repeat;
-    height: 27px;
-    width: 24px;
-    opacity: 0.5;
-    margin-left: 14px;
-}
-
-#responses button:hover {
-    opacity: 1;
-}
-
 #responses p {
     margin-bottom: 20px;
 }
