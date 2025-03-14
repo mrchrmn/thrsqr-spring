@@ -1,62 +1,63 @@
 html {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
+
 *, *:before, *:after {
-  box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 body {
-  background-color: #c8f3c8;
-  color: #174117;
-  font: normal 1.125rem "biorhymeregular", Georgia, 'Times New Roman', Times, serif;
-  margin: 20px;
-  max-width: 640px;
-  word-wrap: break-word;
+    background-color: #c8f3c8;
+    color: #174117;
+    font: normal 1.125rem "biorhymeregular", Georgia, 'Times New Roman', Times, serif;
+    margin: 20px;
+    max-width: 640px;
+    word-wrap: break-word;
 }
 
 
 h1, h2, h3, strong {
-  font-family: "biorhymebold", Georgia, 'Times New Roman', Times, serif;
+    font-family: "biorhymebold", Georgia, 'Times New Roman', Times, serif;
 }
 
 h2.there {
-  color: #00a900;
+    color: #00a900;
 }
 
 h2.square {
-  color: #a92700;
+    color: #a92700;
 }
 
-header, 
+header,
 main {
-  padding-bottom: 40px;
+    padding-bottom: 40px;
 }
 
 #eventTitleBlock {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
-#eventLogo {
-  margin-right: 20px;
-  border-radius: 5%;
+#eventLogo, #eventHeaderLogo {
+    margin-right: 20px;
+    border-radius: 5%;
 }
 
 section {
-  padding: 20px 0;
+    padding: 20px 0;
 }
 
 main > form {
-  margin-top: 0px;
+    margin-top: 0px;
 }
 
 dt {
-  padding-bottom: 5px;
+    padding-bottom: 5px;
 }
 
 dd {
-  margin-left: 0px;
-  padding-bottom: 20px;
+    margin-left: 0px;
+    padding-bottom: 20px;
 }
 
 form input[type="text"],
@@ -64,132 +65,133 @@ form input[type="password"],
 form input[type="time"],
 form input[type="submit"],
 form select,
-form textarea, 
+form textarea,
 main > form button {
-  border: 2px solid #165316;
-  color: #174117;
-  border-radius: 3px;
-  font: inherit;
-  padding: 5px 5px;
-  width: 480px;
+    border: 2px solid #165316;
+    color: #174117;
+    border-radius: 3px;
+    font: inherit;
+    padding: 5px 5px;
+    width: 480px;
 }
 
 form input#eventTimeZone {
-  background-color: #c8f3c8;
+    background-color: #c8f3c8;
 }
 
 main > form button {
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  font-family: "biorhymebold", Georgia, 'Times New Roman', Times, serif;
-  color: white;
-  width: 210px;
-  height: 70px;
-  margin-right: 60px;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    font-family: "biorhymebold", Georgia, 'Times New Roman', Times, serif;
+    color: white;
+    width: 210px;
+    height: 70px;
+    margin-right: 60px;
 }
 
 form input[type="submit"] {
-  font-family: "biorhymebold", Georgia, 'Times New Roman', Times, serif;
-  color: white;
+    font-family: "biorhymebold", Georgia, 'Times New Roman', Times, serif;
+    color: white;
 }
 
 #there, form input[type="submit"] {
-  background-color: #00a900;
+    background-color: #00a900;
 }
 
 #there:hover, form input[type="submit"]:hover {
-  background-color: #1bd31b;
+    background-color: #1bd31b;
 }
 
 #square, form input[type="submit"].delete {
-  background-color: #a92700;
+    background-color: #a92700;
 }
 
 #square:hover, form input[type="submit"].delete:hover {
-  background-color: #d4461b;
+    background-color: #d4461b;
 }
 
 footer {
-  font-size: 1rem;
-  color: #488248;
+    font-size: 1rem;
+    color: #488248;
 }
 
 a {
-  color: #006a00;
+    color: #006a00;
 }
 
 a:hover {
-  color: #00a900;
+    color: #00a900;
 }
 
 #responses button {
-  border: none;
-  background: transparent url("../images/icon_delete.png") 0 3px no-repeat;
-  height: 27px;
-  width: 24px;
-  opacity: 0.5;
-  margin-left: 14px;
+    border: none;
+    background: transparent url("../images/icon_delete.png") 0 3px no-repeat;
+    height: 27px;
+    width: 24px;
+    opacity: 0.5;
+    margin-left: 14px;
 }
 
 #responses button:hover {
-  opacity: 1;
+    opacity: 1;
 }
 
 #responses p {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 #timezoneinfo {
-  font-size: 50%;
+    font-size: 50%;
 }
 
 #email, #message {
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 0;
-  width: 0;
-  z-index: -1;}
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 0;
+    width: 0;
+    z-index: -1;
+}
 
 .smalllinks {
-  font-size: smaller;
+    font-size: smaller;
 }
 
 @media only screen and (max-width: 640px) {
-  body {
-    max-width: 95%;
-    width: 95%;
-    margin: 10px;
-    font-size: 1rem;
-  }
+    body {
+        max-width: 95%;
+        width: 95%;
+        margin: 10px;
+        font-size: 1rem;
+    }
 
-  #eventTitleBlock {
-    display: flex;
-  }
-  
-  #eventLogo {
-    display: none;    
-    margin-right: 0px;
-    border-radius: 5%;
-  }  
+    #eventTitleBlock {
+        display: flex;
+    }
 
-  form input[type="text"],
-  form input[type="password"],
-  form input[type="time"],
-  form input[type="submit"],
-  form select,
-  form textarea, 
-  main > form button {
-    width: 90%;
-  }
+    #eventLogo {
+        display: none;
+        margin-right: 0px;
+        border-radius: 5%;
+    }
 
-  main > form button {
-    width: 40%;
-    margin-right: 10%;
-  }
+    form input[type="text"],
+    form input[type="password"],
+    form input[type="time"],
+    form input[type="submit"],
+    form select,
+    form textarea,
+    main > form button {
+        width: 90%;
+    }
 
-  #responses p {
-    font-size: 112.5%;
-  }
+    main > form button {
+        width: 40%;
+        margin-right: 10%;
+    }
+
+    #responses p {
+        font-size: 112.5%;
+    }
 }

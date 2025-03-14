@@ -31,7 +31,7 @@
         <div id="rightcorner">
             <div th:replace="~{fragments/links :: links}"></div>
             <div id="headerlogo">
-                <img th:src="${event.logourl}" id="eventLogo" width="100px" alt="event logo">
+                <img th:src="${event.logourl}" id="eventHeaderLogo" width="100px" alt="event logo">
             </div>
         </div>
     </header>
@@ -83,8 +83,15 @@
                         <label class="bold-text">[[#{illBe}]]</label>
                     </dt>
                     <dd id="buttons">
-                        <button class="btn-thr" th:formaction="@{/event/${event.code}/1}">[[#{there}]]</button>
-                        <button class="btn-sqr" th:formaction="@{/event/${event.code}/0}">[[#{square}]]</button>
+                        <input type="hidden" name="there" id="thereInput" value="">
+                        <button type="button" class="btn-thr"
+                                onclick="document.getElementById('thereInput').value='true'; this.form.submit();">
+                            [[#{there}]]
+                        </button>
+                        <button type="button" class="btn-sqr"
+                                onclick="document.getElementById('thereInput').value='false'; this.form.submit();">
+                            [[#{square}]]
+                        </button>
                     </dd>
                 </dl>
             </form>
@@ -92,25 +99,25 @@
         </div>
 
         <div id="responses">
-            <h2 id="there" class="thr-green" th:if="${going > 0}">[[#{there}]] - [[${going}]]</h2>
-            <div th:each="response : ${responses}" th:if="${response.there}">
-                <form th:action="@{/event/${event.code}/remove/${response.part_id}}" method="post" class="delete">
-                    <p>
-                        <a href="#">[[${response.username}]]</a>
-                        <span class="smaller">[[${response.comment}]]</span>
-                    </p>
-                </form>
-            </div>
+            <form id="responseForm" th:action="@{/event/${event.code}/removeResponse}" method="post">
+                <input type="hidden" id="participantIdToRemove" name="participantId" value="">
 
-            <h2 id="square" class="sqr-red" th:if="${notGoing > 0}">[[#{square}]] - [[${notGoing}]]</h2>
-            <div th:each="response : ${responses}" th:if="${!response.there}">
-                <form th:action="@{/event/${event.code}/remove/${response.part_id}}" method="post" class="delete">
+                <h2 id="there" class="thr-green" th:if="${going > 0}">[[#{there}]] - [[${going}]]</h2>
+                <div th:each="response : ${responses}" th:if="${response.there}">
                     <p>
-                        <a href="#">[[${response.username}]]</a>
+                        <a href="#" th:data-id="${response.participantId}">[[${response.username}]]</a>
                         <span class="smaller">[[${response.comment}]]</span>
                     </p>
-                </form>
-            </div>
+                </div>
+
+                <h2 id="square" class="sqr-red" th:if="${notGoing > 0}">[[#{square}]] - [[${notGoing}]]</h2>
+                <div th:each="response : ${responses}" th:if="${!response.there}">
+                    <p>
+                        <a href="#" th:data-id="${response.participantId}">[[${response.username}]]</a>
+                        <span class="smaller">[[${response.comment}]]</span>
+                    </p>
+                </div>
+            </form>
         </div>
     </main>
 

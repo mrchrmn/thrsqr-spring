@@ -103,13 +103,18 @@ function setDeleteAlerts() {
 
 
 function removeResponseHandler() {
-  let responseLinks = document.querySelectorAll("#responses a");
+  const responseForm = document.getElementById('responseForm');
+  const responseLinks = document.querySelectorAll('.response-link');
+  const formInput = document.getElementById('participantIdToRemove');
+
   responseLinks.forEach(link => {
-    let form = link.parentElement.parentElement;
-    link.addEventListener("click", event => {
+    link.addEventListener('click', event => {
       event.preventDefault();
+      const participantId = link.dataset.id;
+
       if (confirm(TEXTS.confirmRemoveResponse)) {
-        form.submit();
+        formInput.value = participantId;
+        responseForm.submit();
       }
     });
   });
