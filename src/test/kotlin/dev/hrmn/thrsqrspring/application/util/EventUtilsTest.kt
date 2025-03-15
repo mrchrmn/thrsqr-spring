@@ -1,6 +1,6 @@
 package dev.hrmn.thrsqrspring.application.util
 
-import dev.hrmn.thrsqrspring.adapter.output.persistence.EventRepository
+import dev.hrmn.thrsqrspring.adapter.output.persistence.EventJpaAdapter
 import dev.hrmn.thrsqrspring.adapter.output.persistence.dto.ResponseDto
 import dev.hrmn.thrsqrspring.domain.model.Event
 import io.mockk.every
@@ -12,13 +12,13 @@ import java.time.LocalTime
 
 class EventUtilsTest {
 
-    private val eventRepository = mockk<EventRepository>()
+    private val eventJpaAdapter = mockk<EventJpaAdapter>()
 
     @Test
     fun `generateEventCode should generate unique code`() {
-        every { eventRepository.findByCode(any()) } returns null
+        every { eventJpaAdapter.findByCode(any()) } returns null
 
-        val code = EventUtils.generateEventCode(eventRepository)
+        val code = EventUtils.generateEventCode(eventJpaAdapter)
 
         assertEquals(4, code.length)
         assertTrue(code.all { it.isLetterOrDigit() })

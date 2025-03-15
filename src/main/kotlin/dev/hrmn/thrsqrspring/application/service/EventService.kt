@@ -2,7 +2,7 @@ package dev.hrmn.thrsqrspring.application.service
 
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventViewModel
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.NewEventForm
-import dev.hrmn.thrsqrspring.adapter.output.persistence.EventRepository
+import dev.hrmn.thrsqrspring.adapter.output.persistence.EventJpaAdapter
 import dev.hrmn.thrsqrspring.application.port.input.EventService
 import dev.hrmn.thrsqrspring.application.util.EventUtils
 import dev.hrmn.thrsqrspring.domain.model.Event
@@ -14,7 +14,7 @@ import java.time.ZoneOffset
 
 @Service
 class EventService(
-    private val eventRepository: EventRepository,
+    private val eventJpaAdapter: EventJpaAdapter,
     private val responseService: ResponseService,
     private val timeService: TimeService,
 ) : EventService {
@@ -23,7 +23,7 @@ class EventService(
     }
 
     override fun createNewEvent(newEventForm: NewEventForm): Event {
-        val code = EventUtils.generateEventCode(eventRepository)
+        val code = EventUtils.generateEventCode(eventJpaAdapter)
         val event = Event(
             code = code,
             title = newEventForm.eventTitle,
@@ -34,12 +34,12 @@ class EventService(
             logoURL = newEventForm.eventLogoURL
         )
 
-        return eventRepository.save(event)
+        return eventJpaAdapter.save(event)
     }
 
     @Transactional
     override fun getEventInfoByEventCode(code: String): EventViewModel {
-        val event = eventRepository.findByCode(code) ?: throw IllegalArgumentException("Requested event not found")
+        val event = eventJpaAdapter.findByCode(code) ?: throw IllegalArgumentException("Requested event not found")
 
         resetResponsesIfOutdated(event)
         val responses = responseService.getResponsesByEvent(event)
@@ -56,8 +56,9 @@ class EventService(
         )
     }
 
-    override fun getEventByEventCode(code: String): Event? {
-        return eventRepository.findByCode(code)
+    override fun getEventByEventCode(code: String): Event {
+        return eventJpaAdapter.findByCode(code)
+            ?: throw IllegalArgumentException("Event not found with code: ${code}")
     }
 
     private fun resetResponsesIfOutdated(event: Event) {
@@ -69,7 +70,7 @@ class EventService(
             lastUpdate.isBefore(previousEventTime.plusMinutes(WAIT_TIME_IN_MINUTES))
         ) {
             responseService.deleteAllResponsesFromEvent(event)
-            eventRepository.updateLastUpdateToNow(event)
+            eventJpaAdapter.updateLastUpdateToNow(event)
         }
     }
 }

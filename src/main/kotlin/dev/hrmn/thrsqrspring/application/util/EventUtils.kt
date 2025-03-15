@@ -1,7 +1,7 @@
 package dev.hrmn.thrsqrspring.application.util
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dev.hrmn.thrsqrspring.adapter.output.persistence.EventRepository
+import dev.hrmn.thrsqrspring.adapter.output.persistence.EventJpaAdapter
 import dev.hrmn.thrsqrspring.adapter.output.persistence.dto.ResponseDto
 import dev.hrmn.thrsqrspring.domain.model.Event
 import org.springframework.util.StringUtils.capitalize
@@ -10,7 +10,7 @@ object EventUtils {
     const val DEFAULT_LOGO_URL = "/images/thrsqrlogo-250.png"
     val BUCKET = System.getenv("S3_BUCKET_NAME")
 
-    fun generateEventCode(eventRepository: EventRepository): String {
+    fun generateEventCode(eventJpaAdapter: EventJpaAdapter): String {
         val alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         return generateSequence {
             buildString {
@@ -18,7 +18,7 @@ object EventUtils {
                     append(alphabet.random())
                 }
             }
-        }.first { eventRepository.findByCode(it) == null }
+        }.first { eventJpaAdapter.findByCode(it) == null }
     }
 
     fun getIcons(event: Event): Map<Int, String> {
