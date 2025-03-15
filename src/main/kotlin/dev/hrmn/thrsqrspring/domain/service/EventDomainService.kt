@@ -1,8 +1,7 @@
-package dev.hrmn.thrsqrspring.application.service
+package dev.hrmn.thrsqrspring.domain.service
 
-import dev.hrmn.thrsqrspring.adapter.output.persistence.TimezoneJpaAdapter
-import dev.hrmn.thrsqrspring.application.port.input.TimeService
 import dev.hrmn.thrsqrspring.domain.model.Event
+import dev.hrmn.thrsqrspring.domain.model.Timezone
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -11,23 +10,34 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.parseIsoString
 
 @Service
-class TimeService(
-    private val timezoneJpaAdapter: TimezoneJpaAdapter
-) : TimeService {
-    private val timezoneAbbreviationCache = mutableMapOf<String, String>()
-
-    override fun getTimezoneAbbreviation(name: String): String {
-        return timezoneAbbreviationCache.getOrPut(name) {
-            val timezone = timezoneJpaAdapter.findByName(name)
-            timezone?.abbrev ?: ""
-        }
+class EventDomainService {
+    companion object {
+        const val WAIT_TIME_IN_MINUTES: Long = 1 * 60
     }
 
-    override fun getPreviousEventTime(event: Event): OffsetDateTime {
-        val eventTimezone = timezoneJpaAdapter.findByName(event.timeZone)
-            ?: throw IllegalArgumentException("Requested time zone not found.")
+    fun shouldResetResponses(event: Event, previousEventTime: OffsetDateTime): Boolean {
+        val lastUpdate = event.lastUpdate
+        val now = OffsetDateTime.now(ZoneOffset.UTC)
+        val resetThreshold = previousEventTime.plusMinutes(WAIT_TIME_IN_MINUTES)
 
-        val utcOffset = parseDurationString(eventTimezone.utcOffset)
+        return (now.isAfter(resetThreshold) &&
+                lastUpdate.isBefore(resetThreshold)
+                )
+    }
+
+    fun generateEventCode(isCodeUnique: (String) -> Boolean): String {
+        val alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        return generateSequence {
+            buildString {
+                repeat(4) {
+                    append(alphabet.random())
+                }
+            }
+        }.first(isCodeUnique)
+    }
+
+    fun getPreviousEventTime(event: Event, timezone: Timezone): OffsetDateTime {
+        val utcOffset = parseDurationString(timezone.utcOffset)
 
         val offsetHours = utcOffset.inWholeHours.toInt()
         val offSetMinutes = (utcOffset.inWholeMinutes % 60).toInt()

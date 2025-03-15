@@ -1,24 +1,14 @@
-package dev.hrmn.thrsqrspring.application.util
+package dev.hrmn.thrsqrspring.domain.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dev.hrmn.thrsqrspring.adapter.output.persistence.EventJpaAdapter
-import dev.hrmn.thrsqrspring.adapter.output.persistence.dto.ResponseDto
 import dev.hrmn.thrsqrspring.domain.model.Event
-import org.springframework.util.StringUtils.capitalize
+import org.springframework.stereotype.Service
 
-object EventUtils {
-    const val DEFAULT_LOGO_URL = "/images/thrsqrlogo-250.png"
-    val BUCKET = System.getenv("S3_BUCKET_NAME")
-
-    fun generateEventCode(eventJpaAdapter: EventJpaAdapter): String {
-        val alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        return generateSequence {
-            buildString {
-                repeat(4) {
-                    append(alphabet.random())
-                }
-            }
-        }.first { eventJpaAdapter.findByCode(it) == null }
+@Service
+class LogoDomainService {
+    companion object {
+        const val DEFAULT_LOGO_URL = "/images/thrsqrlogo-250.png"
+        val BUCKET = System.getenv("S3_BUCKET_NAME")
     }
 
     fun getIcons(event: Event): Map<Int, String> {
@@ -29,7 +19,7 @@ object EventUtils {
 
         if (logoURL.startsWith("https")) {
             icons.keys.forEach { key ->
-                icons[key] = getResizedLogoURL(BUCKET, event.code, key)
+                icons[key] = createResizedLogoURL(BUCKET, event.code, key)
             }
         }
 
@@ -40,17 +30,13 @@ object EventUtils {
         val logoURL = event.logoURL
 
         return if (!logoURL.isNullOrBlank() && logoURL.startsWith("https")) {
-            getResizedLogoURL(BUCKET, event.code, 500)
+            createResizedLogoURL(BUCKET, event.code, 500)
         } else {
             DEFAULT_LOGO_URL
         }
     }
 
-    fun capitaliseUsernames(responses: List<ResponseDto>) {
-        responses.forEach { it.username = capitalize(it.username) }
-    }
-
-    private fun getResizedLogoURL(bucket: String, code: String, size: Int): String {
+    private fun createResizedLogoURL(bucket: String, code: String, size: Int): String {
         val reqBody = mapOf(
             "bucket" to bucket,
             "key" to "logos/$code-logo",

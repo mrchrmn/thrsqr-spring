@@ -4,27 +4,30 @@ import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventViewModel
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.NewEventForm
 import dev.hrmn.thrsqrspring.adapter.output.persistence.EventJpaAdapter
 import dev.hrmn.thrsqrspring.application.port.input.EventService
-import dev.hrmn.thrsqrspring.application.util.EventUtils
 import dev.hrmn.thrsqrspring.domain.model.Event
+import dev.hrmn.thrsqrspring.domain.service.EventDomainService
+import dev.hrmn.thrsqrspring.domain.service.LogoDomainService
+import dev.hrmn.thrsqrspring.domain.service.ResponseDomainService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalTime
 import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 @Service
 class EventService(
     private val eventJpaAdapter: EventJpaAdapter,
     private val responseService: ResponseService,
-    private val timeService: TimeService,
+    private val timezoneService: TimezoneService,
+    private val eventDomainService: EventDomainService,
+    private val responseDomainService: ResponseDomainService,
+    private val logoDomainService: LogoDomainService
 ) : EventService {
-    companion object {
-        const val WAIT_TIME_IN_MINUTES: Long = 1 * 60
-    }
-
     override fun createNewEvent(newEventForm: NewEventForm): Event {
-        val code = EventUtils.generateEventCode(eventJpaAdapter)
-        val event = Event(
+        val code = eventDomainService.generateEventCode { code ->
+            eventJpaAdapter.findByCode(code) == null
+        }
+
+        return Event(
             code = code,
             title = newEventForm.eventTitle,
             dayOfWeek = newEventForm.eventDayOfWeek,
@@ -32,22 +35,23 @@ class EventService(
             timeZone = newEventForm.eventTimeZone,
             info = newEventForm.eventInfo,
             logoURL = newEventForm.eventLogoURL
-        )
+        ).let { eventJpaAdapter.save(it) }
 
-        return eventJpaAdapter.save(event)
     }
 
     @Transactional
     override fun getEventInfoByEventCode(code: String): EventViewModel {
         val event = eventJpaAdapter.findByCode(code) ?: throw IllegalArgumentException("Requested event not found")
 
-        resetResponsesIfOutdated(event)
-        val responses = responseService.getResponsesByEvent(event)
-        EventUtils.capitaliseUsernames(responses)
+        val timezone = timezoneService.getTimezoneByName(event.timeZone)
+        val previousEventTime = eventDomainService.getPreviousEventTime(event, timezone)
 
-        val icons = EventUtils.getIcons(event)
-        val logoURL = EventUtils.getLogoUrl(event)
-        val previousEventTime = timeService.getPreviousEventTime(event)
+        resetResponsesIfOutdated(event, previousEventTime)
+        val responses = responseService.getResponsesByEvent(event)
+        responseDomainService.capitaliseUsernames(responses)
+
+        val icons = logoDomainService.getIcons(event)
+        val logoURL = logoDomainService.getLogoUrl(event)
         val going = responses.count { it.there }
         val notGoing = responses.count { !it.there }
 
@@ -61,14 +65,8 @@ class EventService(
             ?: throw IllegalArgumentException("Event not found with code: ${code}")
     }
 
-    private fun resetResponsesIfOutdated(event: Event) {
-        val previousEventTime = timeService.getPreviousEventTime(event)
-        val lastUpdate = event.lastUpdate
-        val now = OffsetDateTime.now(ZoneOffset.UTC)
-
-        if (now.isAfter(previousEventTime.plusMinutes(WAIT_TIME_IN_MINUTES)) &&
-            lastUpdate.isBefore(previousEventTime.plusMinutes(WAIT_TIME_IN_MINUTES))
-        ) {
+    private fun resetResponsesIfOutdated(event: Event, previousEventTime: OffsetDateTime) {
+        if (eventDomainService.shouldResetResponses(event, previousEventTime)) {
             responseService.deleteAllResponsesFromEvent(event)
             eventJpaAdapter.updateLastUpdateToNow(event)
         }
