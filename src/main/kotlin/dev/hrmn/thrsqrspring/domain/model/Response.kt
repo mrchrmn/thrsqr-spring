@@ -6,7 +6,7 @@ import jakarta.persistence.*
 data class Response(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Long,
+    val id: Long = 0,
 
     @ManyToOne
     val event: Event,

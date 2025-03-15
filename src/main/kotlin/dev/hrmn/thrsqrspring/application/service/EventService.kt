@@ -56,6 +56,10 @@ class EventService(
         )
     }
 
+    override fun getEventByEventCode(code: String): Event? {
+        return eventRepository.findByCode(code)
+    }
+
     private fun resetResponsesIfOutdated(event: Event) {
         val previousEventTime = timeService.getPreviousEventTime(event)
         val lastUpdate = event.lastUpdate

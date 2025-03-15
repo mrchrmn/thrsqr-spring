@@ -7,4 +7,5 @@ import dev.hrmn.thrsqrspring.domain.model.Event
 interface EventService {
     fun createNewEvent(newEventForm: NewEventForm): Event
     fun getEventInfoByEventCode(code: String): EventViewModel
+    fun getEventByEventCode(code: String): Event?
 }
