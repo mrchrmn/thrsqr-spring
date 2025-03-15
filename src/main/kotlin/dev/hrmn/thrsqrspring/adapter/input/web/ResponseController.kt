@@ -33,19 +33,20 @@ class ResponseController(
         }
 
         val event = eventService.getEventByEventCode(responseForm.eventCode)
-            ?: throw IllegalArgumentException("Event not found with code: ${responseForm.eventCode}")
 
         val there = responseForm.there == "there"
 
         val newResponse =
             Response(event = event, comment = responseForm.comment, participant = participant, there = there)
 
+        responseService.saveResponse(newResponse)
+
         return "redirect:/event/${responseForm.eventCode}"
     }
 
     @PostMapping("/delete")
     override fun delete(@ModelAttribute deleteResponseForm: DeleteResponseForm, session: HttpSession): String {
-        // TODO: Remove response from database
+        responseService.deleteResponseById(deleteResponseForm.responseId)
 
         return "redirect:/event/${deleteResponseForm.eventCode}"
     }
