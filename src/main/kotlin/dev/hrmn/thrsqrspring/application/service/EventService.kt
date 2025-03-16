@@ -1,7 +1,7 @@
 package dev.hrmn.thrsqrspring.application.service
 
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventEditViewModel
-import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventNewForm
+import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventForm
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventViewModel
 import dev.hrmn.thrsqrspring.adapter.output.persistence.EventJpaAdapter
 import dev.hrmn.thrsqrspring.application.port.input.EventService
@@ -23,19 +23,19 @@ class EventService(
     private val responseDomainService: ResponseDomainService,
     private val logoDomainService: LogoDomainService
 ) : EventService {
-    override fun createNewEvent(eventNewForm: EventNewForm): Event {
+    override fun createNewEvent(eventForm: EventForm): Event {
         val code = eventDomainService.generateEventCode { code ->
             eventJpaAdapter.findByCode(code) == null
         }
 
         return Event(
             code = code,
-            title = eventNewForm.eventTitle,
-            dayOfWeek = eventNewForm.eventDayOfWeek,
-            eventTime = LocalTime.parse(eventNewForm.eventTime),
-            timeZone = eventNewForm.eventTimeZone,
-            info = eventNewForm.eventInfo,
-            logoURL = eventNewForm.eventLogoURL
+            title = eventForm.eventTitle,
+            dayOfWeek = eventForm.eventDayOfWeek,
+            eventTime = LocalTime.parse(eventForm.eventTime),
+            timeZone = eventForm.eventTimeZone,
+            info = eventForm.eventInfo,
+            logoURL = eventForm.eventLogoURL
         ).let { eventJpaAdapter.save(it) }
 
     }

@@ -1,6 +1,6 @@
 package dev.hrmn.thrsqrspring.adapter.input.web.dto
 
-data class EventNewForm(
+data class EventForm(
     val eventTitle: String,
     val eventDayOfWeek: Int,
     val eventTime: String,

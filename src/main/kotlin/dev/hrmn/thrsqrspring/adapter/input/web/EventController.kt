@@ -1,6 +1,6 @@
 package dev.hrmn.thrsqrspring.adapter.input.web
 
-import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventNewForm
+import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventForm
 import dev.hrmn.thrsqrspring.application.port.input.EventController
 import dev.hrmn.thrsqrspring.application.service.EventService
 import jakarta.servlet.http.HttpSession
@@ -17,13 +17,13 @@ class EventController(val eventService: EventService) : EventController {
     }
 
     @PostMapping("/new")
-    override fun createNewEvent(@ModelAttribute eventNewForm: EventNewForm, model: Model): String {
+    override fun createNewEvent(@ModelAttribute eventForm: EventForm, model: Model): String {
         // Honeypot: disregard form if invisible fields email or message are filled.
-        if (eventNewForm.email.isNullOrBlank() && eventNewForm.message.isNullOrBlank()) {
+        if (eventForm.email.isNullOrBlank() && eventForm.message.isNullOrBlank()) {
             return "redirect:/"
         }
 
-        val newEvent = eventService.createNewEvent(eventNewForm)
+        val newEvent = eventService.createNewEvent(eventForm)
 
         model.addAttribute("eventTitle", newEvent.title)
         model.addAttribute("eventCode", newEvent.code)
