@@ -12,6 +12,6 @@ data class Participant(
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Long = 0,
 
-    val username: String,
+    var username: String,
     val lastUpdate: ZonedDateTime = ZonedDateTime.now()
 )

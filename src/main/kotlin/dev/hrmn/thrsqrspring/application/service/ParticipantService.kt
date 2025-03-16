@@ -12,8 +12,11 @@ class ParticipantService(private val participantJpaAdapter: ParticipantJpaAdapte
             .orElseThrow { IllegalArgumentException("Participant not found") }
     }
 
-    override fun createNewParticipant(username: String): Participant {
-        val newParticipant = Participant(username = username)
-        return participantJpaAdapter.save(newParticipant)
+    override fun createOrUpdateParticipant(id: Long?, username: String): Participant {
+        return if (id == null) {
+            Participant(username = username)
+        } else {
+            getParticipantById(id).apply { this.username = username }
+        }.let { participantJpaAdapter.save(it) }
     }
 }

@@ -3,6 +3,7 @@ package dev.hrmn.thrsqrspring.adapter.input.web
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.NewEventForm
 import dev.hrmn.thrsqrspring.application.port.input.EventController
 import dev.hrmn.thrsqrspring.application.service.EventService
+import jakarta.servlet.http.HttpSession
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
@@ -31,15 +32,21 @@ class EventController(val eventService: EventService) : EventController {
     }
 
     @GetMapping("/{eventCode}")
-    override fun displayEvent(@PathVariable eventCode: String, model: Model): String {
-        val eventInfo = eventService.getEventInfoByEventCode(eventCode)
+    override fun displayEvent(@PathVariable eventCode: String, model: Model, session: HttpSession): String {
+        session.attributeNames.toList().forEach { name ->
+            println("$name: ${session.getAttribute(name)}")
+        }
 
-        model.addAttribute("event", eventInfo.event)
-        model.addAttribute("responses", eventInfo.responses)
-        model.addAttribute("icons", eventInfo.icons)
-        model.addAttribute("previousEventTime", eventInfo.previousEventTime)
-        model.addAttribute("going", eventInfo.going)
-        model.addAttribute("notGoing", eventInfo.notGoing)
+        val eventViewModel = eventService.getEventViewModelByEventCode(eventCode)
+        val username = session.getAttribute("username")
+
+        model.addAttribute("event", eventViewModel.event)
+        model.addAttribute("responses", eventViewModel.responses)
+        model.addAttribute("icons", eventViewModel.icons)
+        model.addAttribute("previousEventTime", eventViewModel.previousEventTime)
+        model.addAttribute("going", eventViewModel.going)
+        model.addAttribute("notGoing", eventViewModel.notGoing)
+        model.addAttribute("username", username)
 
         return "event"
     }

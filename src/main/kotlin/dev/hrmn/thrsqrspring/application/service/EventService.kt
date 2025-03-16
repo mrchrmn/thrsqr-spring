@@ -40,14 +40,14 @@ class EventService(
     }
 
     @Transactional
-    override fun getEventInfoByEventCode(code: String): EventViewModel {
+    override fun getEventViewModelByEventCode(code: String): EventViewModel {
         val event = eventJpaAdapter.findByCode(code) ?: throw IllegalArgumentException("Requested event not found")
 
         val timezone = timezoneService.getTimezoneByName(event.timeZone)
         val previousEventTime = eventDomainService.getPreviousEventTime(event, timezone)
 
         resetResponsesIfOutdated(event, previousEventTime)
-        val responses = responseService.getResponsesByEvent(event)
+        val responses = responseService.findByEvent(event)
         responseDomainService.capitaliseUsernames(responses)
 
         val icons = logoDomainService.getIcons(event)
@@ -65,9 +65,13 @@ class EventService(
             ?: throw IllegalArgumentException("Event not found with code: ${code}")
     }
 
+    override fun updateLastUpdateToNow(event: Event) {
+        eventJpaAdapter.updateLastUpdateToNow(event)
+    }
+
     private fun resetResponsesIfOutdated(event: Event, previousEventTime: OffsetDateTime) {
         if (eventDomainService.shouldResetResponses(event, previousEventTime)) {
-            responseService.deleteAllResponsesFromEvent(event)
+            responseService.deleteAllFromEvent(event)
             eventJpaAdapter.updateLastUpdateToNow(event)
         }
     }

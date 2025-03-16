@@ -105,15 +105,15 @@ function setDeleteAlerts() {
 function removeResponseHandler() {
   const responseForm = document.getElementById('responseForm');
   const responseLinks = document.querySelectorAll('.response-link');
-  const formInput = document.getElementById('participantIdToRemove');
+  const formInput = document.getElementById('responseIdToDelete');
 
   responseLinks.forEach(link => {
     link.addEventListener('click', event => {
       event.preventDefault();
-      const participantId = link.dataset.id;
+      const responseId = link.dataset.id;
 
-      if (confirm(TEXTS.confirmRemoveResponse)) {
-        formInput.value = participantId;
+      if (confirm(TEXTS.confirmDeleteResponse)) {
+        formInput.value = responseId;
         responseForm.submit();
       }
     });

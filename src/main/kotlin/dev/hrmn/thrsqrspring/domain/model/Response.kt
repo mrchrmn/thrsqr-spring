@@ -14,6 +14,6 @@ data class Response(
     @ManyToOne
     val participant: Participant,
 
-    val there: Boolean,
-    val comment: String?
+    var there: Boolean,
+    var comment: String?
 )

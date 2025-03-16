@@ -4,5 +4,5 @@ data class ResponseForm(
     val eventCode: String,
     val username: String,
     val comment: String,
-    val there: String,
+    val there: Boolean,
 )

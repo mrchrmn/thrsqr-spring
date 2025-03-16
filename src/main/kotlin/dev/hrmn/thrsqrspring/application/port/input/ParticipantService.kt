@@ -4,5 +4,5 @@ import dev.hrmn.thrsqrspring.domain.model.Participant
 
 interface ParticipantService {
     fun getParticipantById(participantId: Long): Participant
-    fun createNewParticipant(username: String): Participant
+    fun createOrUpdateParticipant(id: Long?, username: String): Participant
 }
