@@ -1,6 +1,6 @@
 package dev.hrmn.thrsqrspring.adapter.input.web
 
-import dev.hrmn.thrsqrspring.adapter.input.web.dto.NewEventForm
+import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventNewForm
 import dev.hrmn.thrsqrspring.application.port.input.EventController
 import dev.hrmn.thrsqrspring.application.service.EventService
 import jakarta.servlet.http.HttpSession
@@ -17,13 +17,13 @@ class EventController(val eventService: EventService) : EventController {
     }
 
     @PostMapping("/new")
-    override fun createNewEvent(@ModelAttribute newEventForm: NewEventForm, model: Model): String {
+    override fun createNewEvent(@ModelAttribute eventNewForm: EventNewForm, model: Model): String {
         // Honeypot: disregard form if invisible fields email or message are filled.
-        if (newEventForm.email.isNotBlank() || newEventForm.message.isNotBlank()) {
+        if (eventNewForm.email.isNullOrBlank() && eventNewForm.message.isNullOrBlank()) {
             return "redirect:/"
         }
 
-        val newEvent = eventService.createNewEvent(newEventForm)
+        val newEvent = eventService.createNewEvent(eventNewForm)
 
         model.addAttribute("eventTitle", newEvent.title)
         model.addAttribute("eventCode", newEvent.code)
@@ -33,15 +33,12 @@ class EventController(val eventService: EventService) : EventController {
 
     @GetMapping("/{eventCode}")
     override fun displayEvent(@PathVariable eventCode: String, model: Model, session: HttpSession): String {
-        session.attributeNames.toList().forEach { name ->
-            println("$name: ${session.getAttribute(name)}")
-        }
-
-        val eventViewModel = eventService.getEventViewModelByEventCode(eventCode)
+        val eventViewModel = eventService.getEventViewModelByCode(eventCode)
         val username = session.getAttribute("username")
 
         model.addAttribute("event", eventViewModel.event)
         model.addAttribute("responses", eventViewModel.responses)
+        model.addAttribute("logoURL", eventViewModel.logoURL)
         model.addAttribute("icons", eventViewModel.icons)
         model.addAttribute("previousEventTime", eventViewModel.previousEventTime)
         model.addAttribute("going", eventViewModel.going)
@@ -49,5 +46,15 @@ class EventController(val eventService: EventService) : EventController {
         model.addAttribute("username", username)
 
         return "event"
+    }
+
+    @GetMapping("/{eventCode}/edit")
+    override fun updateEvent(eventCode: String, model: Model): String {
+        val eventEditViewModel = eventService.getEventEditViewModelByCode(eventCode)
+
+        model.addAttribute("event", eventEditViewModel.event)
+        model.addAttribute("logoURL", eventEditViewModel.logoURL)
+
+        return "edit-event"
     }
 }

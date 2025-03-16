@@ -31,14 +31,14 @@
         <div id="rightcorner">
             <div th:replace="~{fragments/links :: links}"></div>
             <div id="headerlogo">
-                <img th:src="${event.logourl}" id="eventHeaderLogo" width="100px" alt="event logo">
+                <img th:src="${logoURL}" id="eventHeaderLogo" width="100px" alt="event logo">
             </div>
         </div>
     </header>
 
     <main>
         <div id="logo">
-            <img th:src="${event.logourl}" id="eventLogo" width="250px" alt="event logo">
+            <img th:src="${logoURL}" id="eventLogo" width="250px" alt="event logo">
         </div>
 
         <div id="info">

@@ -5,7 +5,7 @@
       layout:decorate="~{layouts/header-footer}">
 
 <head>
-    <title>[[#{newEventHeading}]]</title>
+    <title>[[${event.title}]] - [[#{newEventHeading}]]</title>
     <script type="module" src="/javascript/application.js"></script>
     <script type="module" src="/javascript/logo-handling.js"></script>
     <link rel="stylesheet" href="/stylesheets/forms.css">
@@ -13,8 +13,9 @@
 
 <body>
 <main layout:fragment="main">
-    <h2>[[#{newEventHeading}]]</h2>
-    <form action="/event/new" method="post">
+    <h2>[[${event.title}]]</h2>
+    <h3>[[#{editEventHeading}]]</h3>
+    <form action="/event/${event.id}/edit" method="post">
         <dl>
             <dt>
                 <label for="eventTitle" class="bold-text">[[#{eventTitle}]]</label>
@@ -23,6 +24,7 @@
                 <input type="text"
                        id="eventTitle"
                        name="eventTitle"
+                       th:value="${event.title}"
                        th:placeholder="#{eventTitlePlaceholder}"
                        maxlength="100"
                        required
@@ -36,8 +38,8 @@
                 <select id="eventDayOfWeek" name="eventDayOfWeek" required>
                     <option th:each="i : ${#numbers.sequence(0, 6)}"
                             th:value="${i}"
+                            th:selected="${i == event.dayOfWeek}"
                             th:text="${#messages.msg('weekArray.' + i)}">
-                        [[#{weekArray.${i}}]]
                     </option>
                 </select>
             </dd>
@@ -49,7 +51,7 @@
                 <input type="time"
                        id="eventTime"
                        name="eventTime"
-                       value="18:00"
+                       th:value="${event.eventTime}"
                        required>
             </dd>
 
@@ -60,8 +62,8 @@
                 <input type="text"
                        id="eventTimeZone"
                        name="eventTimeZone"
-                       value=""
-                       readonly>
+                       th:value="${event.timeZone}"
+                       disabled>
             </dd>
 
             <dt>
@@ -72,9 +74,7 @@
                           maxlength="300"
                           id="eventInfo"
                           name="eventInfo"
-                          th:placeholder="#{eventInfoPlaceholder}">
-
-                </textarea>
+                          th:placeholder="#{eventInfoPlaceholder}">[[${event.info}]]</textarea>
             </dd>
         </dl>
 
@@ -87,16 +87,12 @@
                     <input type="file" id="eventLogoFile" accept="image/*">
                 </dd>
             </dl>
-            <img src="/images/thrsqrlogo-250.png" id="eventLogo" width="125" alt="logo">
+            <img th:src="${logoURL}" id="eventLogo" width="125" alt="logo">
         </div>
 
-        <input type="hidden"
-               id="eventLogoURL" name="eventLogoURL" value="/images/thrsqrlogo-250.png">
+        <input type="hidden" id="eventLogoURL" name="eventLogoURL" th:value="${logoURL}">
 
-        <input type="email" id="email" name="email" placeholder="email address" autocomplete="off">
-        <input type="text" id="message" name="message" placeholder="message" autocomplete="off">
-
-        <input type="submit" th:value="#{createEvent}" class="btn">
+        <input type="submit" th:value="#{updateEvent}" class="btn">
     </form>
 </main>
 </body>

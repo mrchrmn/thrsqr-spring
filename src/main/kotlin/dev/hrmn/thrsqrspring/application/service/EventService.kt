@@ -1,7 +1,8 @@
 package dev.hrmn.thrsqrspring.application.service
 
+import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventEditViewModel
+import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventNewForm
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventViewModel
-import dev.hrmn.thrsqrspring.adapter.input.web.dto.NewEventForm
 import dev.hrmn.thrsqrspring.adapter.output.persistence.EventJpaAdapter
 import dev.hrmn.thrsqrspring.application.port.input.EventService
 import dev.hrmn.thrsqrspring.domain.model.Event
@@ -22,25 +23,25 @@ class EventService(
     private val responseDomainService: ResponseDomainService,
     private val logoDomainService: LogoDomainService
 ) : EventService {
-    override fun createNewEvent(newEventForm: NewEventForm): Event {
+    override fun createNewEvent(eventNewForm: EventNewForm): Event {
         val code = eventDomainService.generateEventCode { code ->
             eventJpaAdapter.findByCode(code) == null
         }
 
         return Event(
             code = code,
-            title = newEventForm.eventTitle,
-            dayOfWeek = newEventForm.eventDayOfWeek,
-            eventTime = LocalTime.parse(newEventForm.eventTime),
-            timeZone = newEventForm.eventTimeZone,
-            info = newEventForm.eventInfo,
-            logoURL = newEventForm.eventLogoURL
+            title = eventNewForm.eventTitle,
+            dayOfWeek = eventNewForm.eventDayOfWeek,
+            eventTime = LocalTime.parse(eventNewForm.eventTime),
+            timeZone = eventNewForm.eventTimeZone,
+            info = eventNewForm.eventInfo,
+            logoURL = eventNewForm.eventLogoURL
         ).let { eventJpaAdapter.save(it) }
 
     }
 
     @Transactional
-    override fun getEventViewModelByEventCode(code: String): EventViewModel {
+    override fun getEventViewModelByCode(code: String): EventViewModel {
         val event = eventJpaAdapter.findByCode(code) ?: throw IllegalArgumentException("Requested event not found")
 
         val timezone = timezoneService.getTimezoneByName(event.timeZone)
@@ -60,7 +61,16 @@ class EventService(
         )
     }
 
-    override fun getEventByEventCode(code: String): Event {
+    override fun getEventEditViewModelByCode(code: String): EventEditViewModel {
+        val event = eventJpaAdapter.findByCode(code) ?: throw IllegalArgumentException("Requested event not found")
+        val logoURL = logoDomainService.getLogoUrl(event)
+
+        return EventEditViewModel(
+            event, logoURL
+        )
+    }
+
+    override fun getEventByCode(code: String): Event {
         return eventJpaAdapter.findByCode(code)
             ?: throw IllegalArgumentException("Event not found with code: ${code}")
     }

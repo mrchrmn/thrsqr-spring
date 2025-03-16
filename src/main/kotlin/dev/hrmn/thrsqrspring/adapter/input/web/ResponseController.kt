@@ -29,7 +29,7 @@ class ResponseController(
             session.setAttribute("username", it.username)
         }
 
-        val event = eventService.getEventByEventCode(responseForm.eventCode)
+        val event = eventService.getEventByCode(responseForm.eventCode)
 
         responseService.createOrUpdateResponse(participant, event, responseForm.comment, responseForm.there)
 
