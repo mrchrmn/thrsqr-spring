@@ -65,6 +65,7 @@ class EventService(
             ?: throw IllegalArgumentException("Event not found with code: ${code}")
     }
 
+    @Transactional
     override fun updateLastUpdateToNow(event: Event) {
         eventJpaAdapter.updateLastUpdateToNow(event)
     }
