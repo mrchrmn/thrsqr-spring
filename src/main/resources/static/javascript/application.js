@@ -104,7 +104,7 @@ function setDeleteAlerts() {
 
 function removeResponseHandler() {
   const responseForm = document.getElementById('responseForm');
-  const responseLinks = document.querySelectorAll('.response-link');
+  const responseLinks = document.querySelectorAll('#responseForm a');
   const formInput = document.getElementById('responseIdToDelete');
 
   responseLinks.forEach(link => {
