@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/header-footer}">
+
+<head>
+    <!-- Page-specific stylesheets -->
+    <link rel="stylesheet" href="/stylesheets/welcome.css">
+</head>
+
+<body>
+<main layout:fragment="main">
+    <h2>[[#{legal.privacy.heading}]]</h2>
+    <div th:utext="#{legal.privacy.body}"></div>
+
+    <h2>[[#{legal.disclaimer.heading}]]</h2>
+    <div th:utext="#{legal.disclaimer.body}"></div>
+
+    <h2>[[#{legal.imprint.heading}]]</h2>
+    <div th:utext="#{legal.imprint.body}"></div>
+</main>
+</body>
+</html>
