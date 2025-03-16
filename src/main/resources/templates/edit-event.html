@@ -15,7 +15,7 @@
 <main layout:fragment="main">
     <h2>[[${event.title}]]</h2>
     <h3>[[#{editEventHeading}]]</h3>
-    <form action="/event/${event.id}/edit" method="post">
+    <form th:action="@{/event/{code}/edit(code=${event.code})}" method="post">
         <dl>
             <dt>
                 <label for="eventTitle" class="bold-text">[[#{eventTitle}]]</label>
@@ -63,7 +63,7 @@
                        id="eventTimeZone"
                        name="eventTimeZone"
                        th:value="${event.timeZone}"
-                       disabled>
+                       readonly>
             </dd>
 
             <dt>

@@ -9,6 +9,7 @@ import dev.hrmn.thrsqrspring.domain.model.Event
 import dev.hrmn.thrsqrspring.domain.service.EventDomainService
 import dev.hrmn.thrsqrspring.domain.service.LogoDomainService
 import dev.hrmn.thrsqrspring.domain.service.ResponseDomainService
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalTime
@@ -23,21 +24,36 @@ class EventService(
     private val responseDomainService: ResponseDomainService,
     private val logoDomainService: LogoDomainService
 ) : EventService {
-    override fun createNewEvent(eventForm: EventForm): Event {
-        val code = eventDomainService.generateEventCode { code ->
-            eventJpaAdapter.findByCode(code) == null
-        }
 
-        return Event(
-            code = code,
-            title = eventForm.eventTitle,
-            dayOfWeek = eventForm.eventDayOfWeek,
-            eventTime = LocalTime.parse(eventForm.eventTime),
-            timeZone = eventForm.eventTimeZone,
-            info = eventForm.eventInfo,
-            logoURL = eventForm.eventLogoURL
-        ).let { eventJpaAdapter.save(it) }
+    @Transactional
+    override fun createOrUpdateEvent(eventForm: EventForm, code: String?): Event {
+        return if (code == null) {
+            val newCode = eventDomainService.generateEventCode { generatedCode ->
+                eventJpaAdapter.findByCode(generatedCode) == null
+            }
 
+            Event(
+                code = newCode,
+                title = eventForm.eventTitle,
+                dayOfWeek = eventForm.eventDayOfWeek,
+                eventTime = LocalTime.parse(eventForm.eventTime),
+                timeZone = eventForm.eventTimeZone,
+                info = eventForm.eventInfo,
+                logoURL = eventForm.eventLogoURL
+            )
+        } else {
+            val existingEvent = eventJpaAdapter.findByCode(code)
+                ?: throw EntityNotFoundException("Event with code $code not found")
+
+            existingEvent.apply {
+                title = eventForm.eventTitle
+                dayOfWeek = eventForm.eventDayOfWeek
+                eventTime = LocalTime.parse(eventForm.eventTime)
+                timeZone = eventForm.eventTimeZone
+                info = eventForm.eventInfo
+                logoURL = eventForm.eventLogoURL
+            }
+        }.let { eventJpaAdapter.save(it) }
     }
 
     @Transactional

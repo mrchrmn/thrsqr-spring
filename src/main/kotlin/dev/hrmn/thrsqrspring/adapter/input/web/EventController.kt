@@ -19,11 +19,11 @@ class EventController(val eventService: EventService) : EventController {
     @PostMapping("/new")
     override fun createNewEvent(@ModelAttribute eventForm: EventForm, model: Model): String {
         // Honeypot: disregard form if invisible fields email or message are filled.
-        if (eventForm.email.isNullOrBlank() && eventForm.message.isNullOrBlank()) {
+        if (!eventForm.email.isNullOrBlank() || !eventForm.message.isNullOrBlank()) {
             return "redirect:/"
         }
 
-        val newEvent = eventService.createNewEvent(eventForm)
+        val newEvent = eventService.createOrUpdateEvent(eventForm)
 
         model.addAttribute("eventTitle", newEvent.title)
         model.addAttribute("eventCode", newEvent.code)
@@ -49,12 +49,19 @@ class EventController(val eventService: EventService) : EventController {
     }
 
     @GetMapping("/{eventCode}/edit")
-    override fun updateEvent(eventCode: String, model: Model): String {
+    override fun displayEventEditForm(@PathVariable eventCode: String, model: Model): String {
         val eventEditViewModel = eventService.getEventEditViewModelByCode(eventCode)
 
         model.addAttribute("event", eventEditViewModel.event)
         model.addAttribute("logoURL", eventEditViewModel.logoURL)
 
         return "edit-event"
+    }
+
+    @PostMapping("/{eventCode}/edit")
+    override fun updateEvent(@PathVariable eventCode: String, eventForm: EventForm): String {
+        eventService.createOrUpdateEvent(eventForm, eventCode)
+
+        return "redirect:/event/${eventCode}"
     }
 }

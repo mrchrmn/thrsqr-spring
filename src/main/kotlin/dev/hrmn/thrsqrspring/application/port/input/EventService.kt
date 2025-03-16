@@ -6,9 +6,11 @@ import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventViewModel
 import dev.hrmn.thrsqrspring.domain.model.Event
 
 interface EventService {
-    fun createNewEvent(eventForm: EventForm): Event
+    fun createOrUpdateEvent(eventForm: EventForm, code: String? = null): Event
+
     fun getEventViewModelByCode(code: String): EventViewModel
     fun getEventByCode(code: String): Event?
-    fun updateLastUpdateToNow(event: Event)
     fun getEventEditViewModelByCode(code: String): EventEditViewModel
+
+    fun updateLastUpdateToNow(event: Event)
 }

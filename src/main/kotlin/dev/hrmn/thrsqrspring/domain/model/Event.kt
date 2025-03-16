@@ -15,11 +15,11 @@ data class Event(
     val id: Long = 0,
 
     val code: String,
-    val title: String,
-    val dayOfWeek: Int,
-    val eventTime: LocalTime,
-    val timeZone: String,
-    val info: String? = null,
+    var title: String,
+    var dayOfWeek: Int,
+    var eventTime: LocalTime,
+    var timeZone: String,
+    var info: String? = null,
     val lastUpdate: OffsetDateTime = OffsetDateTime.now(ZoneOffset.UTC),
-    val logoURL: String? = null
+    var logoURL: String? = null
 )
