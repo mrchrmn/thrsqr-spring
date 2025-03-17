@@ -184,6 +184,10 @@ dd#buttons {
     padding-bottom: 9px;
 }
 
+.username {
+    text-transform: capitalize;
+}
+
 footer {
     display: none;
     align-items: center;

@@ -8,7 +8,6 @@ import dev.hrmn.thrsqrspring.application.port.input.EventService
 import dev.hrmn.thrsqrspring.domain.model.Event
 import dev.hrmn.thrsqrspring.domain.service.EventDomainService
 import dev.hrmn.thrsqrspring.domain.service.LogoDomainService
-import dev.hrmn.thrsqrspring.domain.service.ResponseDomainService
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,7 +20,6 @@ class EventService(
     private val responseService: ResponseService,
     private val timezoneService: TimezoneService,
     private val eventDomainService: EventDomainService,
-    private val responseDomainService: ResponseDomainService,
     private val logoDomainService: LogoDomainService
 ) : EventService {
 
@@ -65,7 +63,6 @@ class EventService(
 
         resetResponsesIfOutdated(event, previousEventTime)
         val responses = responseService.findByEvent(event)
-        responseDomainService.capitaliseUsernames(responses)
 
         val icons = logoDomainService.getIcons(event)
         val logoURL = logoDomainService.getLogoUrl(event)
