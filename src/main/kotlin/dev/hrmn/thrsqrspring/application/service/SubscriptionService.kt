@@ -24,7 +24,7 @@ class SubscriptionService(
             subscriptionJpaAdapter.findByEndpoint(subscription.endpoint) ?: subscriptionJpaAdapter.save(subscription)
 
         if (!isSubscribed(eventCode, subscription)) {
-            subscriptionJpaAdapter.saveEventSubscription(event, subscription)
+            subscriptionJpaAdapter.saveEventSubscription(event, savedSubscription)
         }
     }
 
