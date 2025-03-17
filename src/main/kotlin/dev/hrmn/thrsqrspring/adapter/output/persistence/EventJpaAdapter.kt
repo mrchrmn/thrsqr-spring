@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class EventJpaAdapter(private val eventJpaRepository: EventJpaRepository) : EventRepository {
+
     override fun save(event: Event): Event {
         return eventJpaRepository.save(event)
     }

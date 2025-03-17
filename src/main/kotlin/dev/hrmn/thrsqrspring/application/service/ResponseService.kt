@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ResponseService(private val responseJpaAdapter: ResponseJpaAdapter) : ResponseService {
+
     @Transactional
     override fun createOrUpdateResponse(
         participant: Participant,

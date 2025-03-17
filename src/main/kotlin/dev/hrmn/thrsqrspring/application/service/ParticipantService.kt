@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ParticipantService(private val participantJpaAdapter: ParticipantJpaAdapter) : ParticipantService {
+
     override fun getParticipantById(participantId: Long): Participant {
         return participantJpaAdapter.findById(participantId)
             .orElseThrow { IllegalArgumentException("Participant not found") }

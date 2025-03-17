@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class TimezoneJpaAdapter(private val timezoneJpaRepository: TimezoneJpaRepository) : TimezoneRepository {
+
     override fun findByName(name: String): Timezone? {
         return timezoneJpaRepository.findByName(name)
     }

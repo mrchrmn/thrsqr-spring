@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody
 class TimezoneController(
     private val timezoneService: TimezoneService,
 ) : TimezoneController {
+
     @PostMapping("/timezone-abbrev")
     override fun getTimezoneAbbreviation(@RequestBody timezoneRequest: TimezoneRequest): ResponseEntity<String> {
         val abbreviation = timezoneService.getTimezoneAbbreviation(timezoneRequest.timezone)

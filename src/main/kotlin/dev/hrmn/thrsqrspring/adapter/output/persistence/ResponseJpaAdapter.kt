@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class ResponseJpaAdapter(private val responseJpaRepository: ResponseJpaRepository) : ResponseRepository {
+
     override fun findDtoByEvent(event: Event): List<ResponseDto> {
         return responseJpaRepository.findDtoByEvent(event)
     }

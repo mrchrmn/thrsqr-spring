@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 class TimezoneService(
     private val timezoneJpaAdapter: TimezoneJpaAdapter
 ) : TimezoneService {
+
     private val timezoneAbbreviationCache = mutableMapOf<String, String>()
 
     override fun getTimezoneAbbreviation(name: String): String {

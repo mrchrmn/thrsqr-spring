@@ -131,7 +131,7 @@ async function subFetcher(subscription, path) {
 
 async function isEventSubbed(subscription, eventId) {
   try {
-    let res = await subFetcher(subscription, `/event/${eventId}/check-sub`);
+    let res = await subFetcher(subscription, `/check-sub/${eventId}`);
     return await res.json();
   } catch (error) {
     console.log("Could not check subscription:\n", error);
@@ -187,7 +187,7 @@ async function displaySubLinks(registration) {
         unsubLink.addEventListener("click", async event => {
           event.preventDefault();
 
-          await subFetcher(subscription, `/event/${eventCode}/unsubscribe`);
+          await subFetcher(subscription, `/unsubscribe/${eventCode}`);
           await displaySubLinks(registration);
         });
 
@@ -199,7 +199,7 @@ async function displaySubLinks(registration) {
 
           if (!subscription) subscription = await subscribe(registration);
 
-          await subFetcher(subscription, `/event/${eventCode}/subscribe/${lang}`);
+          await subFetcher(subscription, `/subscribe/${eventCode}`);
           await displaySubLinks(registration);
         });
       }

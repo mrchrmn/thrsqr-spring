@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/event", "/e")
 class EventController(val eventService: EventService) : EventController {
+
     @GetMapping("/new")
     override fun displayNewEventForm(model: Model): String {
         return "new-event"

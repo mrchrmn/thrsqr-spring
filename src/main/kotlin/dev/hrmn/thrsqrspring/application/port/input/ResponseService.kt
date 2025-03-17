@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service
 
 @Service
 interface ResponseService {
+    fun findByEvent(event: Event): List<ResponseDto>
+
+    fun createOrUpdateResponse(participant: Participant, event: Event, comment: String, there: Boolean): Response
+
     fun deleteById(id: Long)
     fun deleteAllFromEvent(event: Event)
-    fun findByEvent(event: Event): List<ResponseDto>
-    fun createOrUpdateResponse(participant: Participant, event: Event, comment: String, there: Boolean): Response
 }

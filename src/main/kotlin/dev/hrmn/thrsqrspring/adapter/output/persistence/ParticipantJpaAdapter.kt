@@ -8,6 +8,7 @@ import java.util.*
 
 @Repository
 class ParticipantJpaAdapter(private val participantJpaRepository: ParticipantJpaRepository) : ParticipantRepository {
+
     override fun save(participant: Participant): Participant {
         return participantJpaRepository.save(participant)
     }

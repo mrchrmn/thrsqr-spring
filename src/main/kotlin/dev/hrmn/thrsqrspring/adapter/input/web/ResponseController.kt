@@ -19,6 +19,7 @@ class ResponseController(
     private val responseService: ResponseService,
     private val eventService: EventService,
 ) : ResponseController {
+
     @PostMapping("/")
     override fun save(@ModelAttribute responseForm: ResponseForm, session: HttpSession): String {
         val participantId = session.getAttribute("participantId") as? Long
