@@ -3,8 +3,8 @@
 
 "use strict";
 
-import { urlBase64ToUint8Array } from "/javascript/base64.mjs";
-import { texts } from "/locale/texts.mjs";
+import {urlBase64ToUint8Array} from "/javascript/base64.mjs";
+import {texts} from "/locale/texts.mjs";
 
 let lang;
 let TEXTS;
@@ -14,8 +14,7 @@ let TEXTS;
 
 async function registerServiceWorker() {
   try {
-    let registration = await navigator.serviceWorker.register("/service-worker.js");
-    return registration;
+    return await navigator.serviceWorker.register("/service-worker.js");
 
   } catch (error) {
     console.log("Unable to register service worker:\n" + error);
@@ -63,17 +62,10 @@ async function unsubscribe(registration) {
 
 // HELPER
 
-function getEventId() {
-  let path = window.location.pathname;
-  if (path.startsWith("/event/")) return path.split("/")[2];
-  return null;
-}
-
-
 function canPush() {
   if (!("serviceWorker" in navigator) ||
-      !("PushManager" in window) ||
-      !("Notification" in window)) {
+    !("PushManager" in window) ||
+    !("Notification" in window)) {
     console.log("This browser does not support push notifications.");
     return null;
   }
@@ -123,14 +115,13 @@ function createUnsubAllLink(parent) {
 
 async function subFetcher(subscription, path) {
   try {
-    let res = await fetch(path, {
+    return await fetch(path, {
       method: "POST",
       body: JSON.stringify(subscription),
       headers: {
         "content-type": "application/json"
       }
     });
-    return res;
   } catch (error) {
     console.log(`Could not perform subscribe operation at path ${path}`, error);
     return null;
@@ -141,8 +132,7 @@ async function subFetcher(subscription, path) {
 async function isEventSubbed(subscription, eventId) {
   try {
     let res = await subFetcher(subscription, `/event/${eventId}/check-sub`);
-    let body = await res.json();
-    return body;
+    return await res.json();
   } catch (error) {
     console.log("Could not check subscription:\n", error);
     return null;
@@ -153,7 +143,6 @@ async function isEventSubbed(subscription, eventId) {
 // SUBSCRIPTION UI
 
 async function displaySubLinks(registration) {
-
   let subscription = await registration.pushManager.getSubscription();
 
   let unsubAllElements = document.querySelectorAll(".unsubscribeAll");
@@ -182,14 +171,14 @@ async function displaySubLinks(registration) {
     subsSection.style.display = "none";
     removeChildren(subsSection);
 
-    let eventId = getEventId();
+    let eventCode = document.body.dataset.eventcode;
 
-    if (eventId) {
+    if (eventCode) {
       subsSection.style.display = "block";
 
       let eventSubbed = false;
       if (subscription) {
-        eventSubbed = await isEventSubbed(subscription, eventId);
+        eventSubbed = await isEventSubbed(subscription, eventCode);
       }
 
       if (eventSubbed === true) {
@@ -198,7 +187,7 @@ async function displaySubLinks(registration) {
         unsubLink.addEventListener("click", async event => {
           event.preventDefault();
 
-          await subFetcher(subscription, `/event/${eventId}/unsubscribe`);
+          await subFetcher(subscription, `/event/${eventCode}/unsubscribe`);
           await displaySubLinks(registration);
         });
 
@@ -210,7 +199,7 @@ async function displaySubLinks(registration) {
 
           if (!subscription) subscription = await subscribe(registration);
 
-          await subFetcher(subscription, `/event/${eventId}/subscribe/${lang}`);
+          await subFetcher(subscription, `/event/${eventCode}/subscribe/${lang}`);
           await displaySubLinks(registration);
         });
       }

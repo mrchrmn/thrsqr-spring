@@ -24,7 +24,7 @@
     <link rel="manifest" th:href="@{/${event.code}.webmanifest}" crossorigin="use-credentials">
 </head>
 
-<body>
+<body th:data-eventcode="${event.code}">
 <div id="flexwrap" layout:fragment="body">
     <header>
         <div th:replace="~{fragments/homelink :: homelink}"></div>
@@ -107,7 +107,7 @@
                 <h2 id="there" class="thr-green" th:if="${going > 0}">[[#{there}]] - [[${going}]]</h2>
                 <div th:each="response : ${responses}" th:if="${response.there}">
                     <p>
-                        <a href="#" th:data-id="${response.id}">[[${response.username}]]</a>
+                        <a href="#" th:data-id="${response.id}" class="username">[[${response.username}]]</a>
                         <span class="smaller">[[${response.comment}]]</span>
                     </p>
                 </div>
@@ -115,7 +115,7 @@
                 <h2 id="square" class="sqr-red" th:if="${notGoing > 0}">[[#{square}]] - [[${notGoing}]]</h2>
                 <div th:each="response : ${responses}" th:if="${!response.there}">
                     <p>
-                        <a href="#" th:data-id="${response.id}">[[${response.username}]]</a>
+                        <a href="#" th:data-id="${response.id}" class="username">[[${response.username}]]</a>
                         <span class="smaller">[[${response.comment}]]</span>
                     </p>
                 </div>
