@@ -145,6 +145,8 @@ async function isEventSubbed(subscription, eventId) {
 async function displaySubLinks(registration) {
   let subscription = await registration.pushManager.getSubscription();
 
+  console.log("SUBSCRIPTION:", subscription)
+
   let unsubAllElements = document.querySelectorAll(".unsubscribeAll");
 
   if (subscription) {

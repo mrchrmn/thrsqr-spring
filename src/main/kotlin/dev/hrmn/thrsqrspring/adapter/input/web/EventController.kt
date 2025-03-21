@@ -32,7 +32,7 @@ class EventController(val eventService: EventService) : EventController {
         return "new-event-success"
     }
 
-    @GetMapping("/{eventCode}")
+    @GetMapping("/{eventCode}/", "/{eventCode}")
     override fun displayEvent(@PathVariable eventCode: String, model: Model, session: HttpSession): String {
         val eventViewModel = eventService.getEventViewModelByCode(eventCode)
         val username = session.getAttribute("username")
