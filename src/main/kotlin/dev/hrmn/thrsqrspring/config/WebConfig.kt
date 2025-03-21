@@ -1,4 +1,4 @@
-package dev.hrmn.thrsqrspring.configuration
+package dev.hrmn.thrsqrspring.config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
