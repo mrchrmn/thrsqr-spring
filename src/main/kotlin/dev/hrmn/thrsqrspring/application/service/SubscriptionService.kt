@@ -1,5 +1,6 @@
 package dev.hrmn.thrsqrspring.application.service
 
+import dev.hrmn.thrsqrspring.adapter.output.persistence.EventJpaAdapter
 import dev.hrmn.thrsqrspring.adapter.output.persistence.SubscriptionJpaAdapter
 import dev.hrmn.thrsqrspring.application.port.input.SubscriptionService
 import dev.hrmn.thrsqrspring.domain.model.Subscription
@@ -9,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class SubscriptionService(
     private val subscriptionJpaAdapter: SubscriptionJpaAdapter,
-    private val eventService: EventService
+    private val eventJpaAdapter: EventJpaAdapter
 ) : SubscriptionService {
 
     override fun isSubscribed(eventCode: String, subscription: Subscription): Boolean {
@@ -18,7 +19,8 @@ class SubscriptionService(
 
     @Transactional
     override fun subscribe(eventCode: String, subscription: Subscription) {
-        val event = eventService.getEventByCode(eventCode)
+        val event = eventJpaAdapter.findByCode(eventCode)
+            ?: throw IllegalArgumentException("Event not found with code: ${eventCode}")
 
         val savedSubscription =
             subscriptionJpaAdapter.findByEndpoint(subscription.endpoint) ?: subscriptionJpaAdapter.save(subscription)
@@ -30,7 +32,8 @@ class SubscriptionService(
 
     @Transactional
     override fun unsubscribe(eventCode: String, subscription: Subscription) {
-        val event = eventService.getEventByCode(eventCode)
+        val event = eventJpaAdapter.findByCode(eventCode)
+            ?: throw IllegalArgumentException("Event not found with code: ${eventCode}")
 
         val existingSubscription = subscriptionJpaAdapter.findByEndpoint(subscription.endpoint) ?: return
 
@@ -42,9 +45,5 @@ class SubscriptionService(
         val existingSubscription = subscriptionJpaAdapter.findByEndpoint(subscription.endpoint) ?: return
 
         subscriptionJpaAdapter.deleteAllEventSubscriptions(existingSubscription)
-    }
-
-    override fun getSubscriptionsForEvent(eventCode: String): List<Subscription> {
-        return subscriptionJpaAdapter.findSubscriptionsByEventCode(eventCode)
     }
 }
