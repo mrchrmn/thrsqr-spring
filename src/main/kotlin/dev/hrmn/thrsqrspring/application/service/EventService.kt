@@ -4,6 +4,8 @@ import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventEditViewModel
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventForm
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventViewModel
 import dev.hrmn.thrsqrspring.adapter.output.persistence.EventJpaAdapter
+import dev.hrmn.thrsqrspring.adapter.output.persistence.ResponseJpaAdapter
+import dev.hrmn.thrsqrspring.adapter.output.persistence.TimezoneJpaAdapter
 import dev.hrmn.thrsqrspring.application.port.input.EventService
 import dev.hrmn.thrsqrspring.domain.model.Event
 import dev.hrmn.thrsqrspring.domain.service.EventDomainService
@@ -17,8 +19,8 @@ import java.time.OffsetDateTime
 @Service
 class EventService(
     private val eventJpaAdapter: EventJpaAdapter,
-    private val responseService: ResponseService,
-    private val timezoneService: TimezoneService,
+    private val responseJpaAdapter: ResponseJpaAdapter,
+    private val timezoneJpaAdapter: TimezoneJpaAdapter,
     private val eventDomainService: EventDomainService,
     private val logoDomainService: LogoDomainService
 ) : EventService {
@@ -58,11 +60,12 @@ class EventService(
     override fun getEventViewModelByCode(code: String): EventViewModel {
         val event = eventJpaAdapter.findByCode(code) ?: throw IllegalArgumentException("Requested event not found")
 
-        val timezone = timezoneService.getTimezoneByName(event.timeZone)
+        val timezone = timezoneJpaAdapter.findByName(event.timeZone)
+            ?: throw IllegalArgumentException("Requested time zone not found.")
         val previousEventTime = eventDomainService.getPreviousEventTime(event, timezone)
 
         resetResponsesIfOutdated(event, previousEventTime)
-        val responses = responseService.findByEvent(event)
+        val responses = responseJpaAdapter.findDtoByEvent(event)
 
         val icons = logoDomainService.getIcons(event)
         val logoURL = logoDomainService.getLogoUrl(event)
@@ -95,7 +98,7 @@ class EventService(
 
     private fun resetResponsesIfOutdated(event: Event, previousEventTime: OffsetDateTime) {
         if (eventDomainService.shouldResetResponses(event, previousEventTime)) {
-            responseService.deleteAllFromEvent(event)
+            responseJpaAdapter.deleteByEvent(event)
             eventJpaAdapter.updateLastUpdateToNow(event)
         }
     }

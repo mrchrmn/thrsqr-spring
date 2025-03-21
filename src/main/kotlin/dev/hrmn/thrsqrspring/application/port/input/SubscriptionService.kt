@@ -4,7 +4,6 @@ import dev.hrmn.thrsqrspring.domain.model.Subscription
 
 interface SubscriptionService {
     fun isSubscribed(eventCode: String, subscription: Subscription): Boolean
-    fun getSubscriptionsForEvent(eventCode: String): List<Subscription>
 
     fun subscribe(eventCode: String, subscription: Subscription)
     fun unsubscribe(eventCode: String, subscription: Subscription)
