@@ -21,7 +21,7 @@
     <link rel="icon" type="image/png" sizes="256x256" th:href="@{${icons[256]}}">
 
     <!-- Page-specific manifest -->
-    <link rel="manifest" th:href="@{/${event.code}.webmanifest}" crossorigin="use-credentials">
+    <link rel="manifest" th:href="@{'/event/' + ${event.code} + '/webmanifest'}" crossorigin="use-credentials">
 </head>
 
 <body th:data-eventcode="${event.code}">

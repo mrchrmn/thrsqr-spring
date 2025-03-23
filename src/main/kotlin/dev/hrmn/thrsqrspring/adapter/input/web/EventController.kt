@@ -3,14 +3,20 @@ package dev.hrmn.thrsqrspring.adapter.input.web
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventForm
 import dev.hrmn.thrsqrspring.application.port.input.EventController
 import dev.hrmn.thrsqrspring.application.service.EventService
+import dev.hrmn.thrsqrspring.domain.service.WebmanifestDomainService
 import jakarta.servlet.http.HttpSession
+import org.springframework.http.HttpHeaders
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/event", "/e")
-class EventController(val eventService: EventService) : EventController {
+class EventController(
+    val eventService: EventService,
+    private val webmanifestDomainService: WebmanifestDomainService
+) : EventController {
 
     @GetMapping("/new")
     override fun displayNewEventForm(model: Model): String {
@@ -64,5 +70,16 @@ class EventController(val eventService: EventService) : EventController {
         eventService.createOrUpdateEvent(eventForm, eventCode)
 
         return "redirect:/event/${eventCode}"
+    }
+
+    @GetMapping("/{eventCode}/webmanifest")
+    override fun sendWebManifest(@PathVariable eventCode: String, model: Model): ResponseEntity<String> {
+        val event = eventService.getEventByCode(eventCode)
+        val webmanifest = webmanifestDomainService.generateManifest(event)
+
+        return ResponseEntity
+            .ok()
+            .header(HttpHeaders.CONTENT_TYPE, "application/manifest+json")
+            .body(webmanifest)
     }
 }

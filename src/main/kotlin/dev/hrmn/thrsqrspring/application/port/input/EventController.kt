@@ -2,6 +2,7 @@ package dev.hrmn.thrsqrspring.application.port.input
 
 import dev.hrmn.thrsqrspring.adapter.input.web.dto.EventForm
 import jakarta.servlet.http.HttpSession
+import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
@@ -14,4 +15,6 @@ interface EventController {
 
     fun displayEventEditForm(@PathVariable eventCode: String, model: Model): String
     fun updateEvent(@PathVariable eventCode: String, @ModelAttribute eventForm: EventForm): String
+
+    fun sendWebManifest(@PathVariable eventCode: String, model: Model): ResponseEntity<String>
 }

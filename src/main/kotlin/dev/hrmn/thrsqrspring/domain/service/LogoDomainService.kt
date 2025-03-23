@@ -36,7 +36,7 @@ class LogoDomainService {
         }
     }
 
-    private fun createResizedLogoURL(bucket: String, code: String, size: Int): String {
+    fun createResizedLogoURL(bucket: String, code: String, size: Int): String {
         val reqBody = mapOf(
             "bucket" to bucket,
             "key" to "logos/$code-logo",
