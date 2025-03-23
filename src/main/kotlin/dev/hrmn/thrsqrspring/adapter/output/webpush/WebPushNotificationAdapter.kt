@@ -6,6 +6,7 @@ import dev.hrmn.thrsqrspring.domain.model.Event
 import dev.hrmn.thrsqrspring.domain.model.Participant
 import dev.hrmn.thrsqrspring.domain.model.Response
 import dev.hrmn.thrsqrspring.domain.model.Subscription
+import dev.hrmn.thrsqrspring.domain.service.WebPushDomainService
 import nl.martijndwars.webpush.Notification
 import nl.martijndwars.webpush.PushService
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -18,7 +19,8 @@ import java.util.concurrent.Executors
 
 @Component
 class WebPushNotificationAdapter(
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
+    private val webPushDomainService: WebPushDomainService
 ) : WebPushNotificationPort {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -83,16 +85,20 @@ class WebPushNotificationAdapter(
         notGoing: Int,
         language: String
     ): String {
+        val bodyText = webPushDomainService.buildNotificationBody(
+            language = language,
+            going = going,
+            notGoing = notGoing,
+            username = participant?.username,
+            userResponseIsThere = response?.there,
+            comment = response?.comment
+        )
+
         val notificationData = mapOf(
             "title" to event.title,
             "eventId" to event.code,
             "iconURL" to "/images/icon-192.png",
-            "going" to going,
-            "notGoing" to notGoing,
-            "language" to language,
-            "username" to participant?.username,
-            "there" to response?.there,
-            "comment" to response?.comment
+            "body" to bodyText
         )
 
         return objectMapper.writeValueAsString(notificationData)
