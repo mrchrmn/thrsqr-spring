@@ -22,7 +22,7 @@ class WebPushDomainService(
         val willBeText = messageSource.getMessage("willBe", null, locale)
 
         return buildString {
-            append("$thereText: $going | $squareText: $notGoing\n\n")
+            append("$thereText: $going | $squareText: $notGoing\n")
             if (username != null) {
                 val userResponse = if (userResponseIsThere == true) thereText.lowercase() else squareText.lowercase()
                 append("$username $willBeText $userResponse")
