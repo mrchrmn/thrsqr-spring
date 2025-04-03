@@ -16,7 +16,7 @@ class S3Service(
     override fun getS3Response(fileType: String, eventCode: String): S3Response {
         return S3Response(
             s3request = s3Adapter.generatePresignedURL(fileType, eventCode),
-            url = "https://${bucketName}.s3.amazonaws.com/logos/${eventCode}-logo",
+            url = "https://${bucketName}.s3.amazonaws.com/logos/$eventCode-logo",
         )
 
     }

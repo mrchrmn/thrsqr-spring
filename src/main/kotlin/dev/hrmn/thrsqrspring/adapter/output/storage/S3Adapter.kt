@@ -3,6 +3,7 @@ package dev.hrmn.thrsqrspring.adapter.output.storage
 import dev.hrmn.thrsqrspring.application.port.output.S3Port
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import software.amazon.awssdk.services.s3.model.ObjectCannedACL
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest
@@ -18,7 +19,8 @@ class S3Adapter(
     override fun generatePresignedURL(fileType: String, eventCode: String): String {
         val objectRequest = PutObjectRequest.builder()
             .bucket(bucketName)
-            .key("logos/${eventCode}-logo")
+            .key("logos/$eventCode-logo")
+            .acl(ObjectCannedACL.PUBLIC_READ)
             .contentType(fileType)
             .build()
 
