@@ -2,24 +2,25 @@ package dev.hrmn.thrsqrspring.domain.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import dev.hrmn.thrsqrspring.domain.model.Event
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class LogoDomainService {
-    companion object {
-        const val DEFAULT_LOGO_URL = "/images/thrsqrlogo-250.png"
-        val BUCKET = System.getenv("S3_BUCKET_NAME")
-    }
-
+class LogoDomainService(
+    @Value("\${s3.bucketName}")
+    private val bucketName: String,
+    @Value("\${logo.defaultUrl}")
+    private val defaultLogoUrl: String
+) {
     fun getIcons(event: Event): Map<Int, String> {
         val logoURL = getLogoUrl(event)
 
         val sizes = listOf(144, 192, 256, 512)
-        val icons = sizes.associateWith { DEFAULT_LOGO_URL }.toMutableMap()
+        val icons = sizes.associateWith { defaultLogoUrl }.toMutableMap()
 
         if (logoURL.startsWith("https")) {
             icons.keys.forEach { key ->
-                icons[key] = createResizedLogoURL(BUCKET, event.code, key)
+                icons[key] = createResizedLogoURL(bucketName, event.code, key)
             }
         }
 
@@ -30,9 +31,9 @@ class LogoDomainService {
         val logoURL = event.logoURL
 
         return if (!logoURL.isNullOrBlank() && logoURL.startsWith("https")) {
-            createResizedLogoURL(BUCKET, event.code, 500)
+            createResizedLogoURL(bucketName, event.code, 500)
         } else {
-            DEFAULT_LOGO_URL
+            defaultLogoUrl
         }
     }
 

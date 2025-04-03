@@ -1,15 +1,17 @@
 package dev.hrmn.thrsqrspring.domain.service
 
 import dev.hrmn.thrsqrspring.domain.model.Event
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class WebmanifestDomainService(private val logoDomainService: LogoDomainService) {
-    companion object {
-        const val DEFAULT_LOGO_URL = "/images/thrsqrlogo-250.png"
-        val BUCKET = System.getenv("S3_BUCKET_NAME")
-    }
-
+class WebmanifestDomainService(
+    private val logoDomainService: LogoDomainService,
+    @Value("\${s3.bucketName}")
+    private val bucketName: String,
+    @Value("\${logo.defaultUrl}")
+    private val defaultLogoUrl: String
+) {
     fun generateManifest(event: Event): String {
         return """
         {
@@ -19,10 +21,10 @@ class WebmanifestDomainService(private val logoDomainService: LogoDomainService)
             {
               "src": "${
             if (event.logoURL!!.startsWith("https")) logoDomainService.createResizedLogoURL(
-                BUCKET,
+                bucketName,
                 event.code,
                 144
-            ) else DEFAULT_LOGO_URL
+            ) else defaultLogoUrl
         }",
               "sizes": "144x144",
               "type": "image/png"
@@ -30,10 +32,10 @@ class WebmanifestDomainService(private val logoDomainService: LogoDomainService)
             {
               "src": "${
             if (event.logoURL!!.startsWith("https")) logoDomainService.createResizedLogoURL(
-                BUCKET,
+                bucketName,
                 event.code,
                 192
-            ) else DEFAULT_LOGO_URL
+            ) else defaultLogoUrl
         }",
               "sizes": "192x192",
               "type": "image/png"
@@ -41,10 +43,10 @@ class WebmanifestDomainService(private val logoDomainService: LogoDomainService)
             {
               "src": "${
             if (event.logoURL!!.startsWith("https")) logoDomainService.createResizedLogoURL(
-                BUCKET,
+                bucketName,
                 event.code,
                 256
-            ) else DEFAULT_LOGO_URL
+            ) else defaultLogoUrl
         }",
               "sizes": "256x256",
               "type": "image/png"
@@ -52,10 +54,10 @@ class WebmanifestDomainService(private val logoDomainService: LogoDomainService)
             {
               "src": "${
             if (event.logoURL!!.startsWith("https")) logoDomainService.createResizedLogoURL(
-                BUCKET,
+                bucketName,
                 event.code,
                 512
-            ) else DEFAULT_LOGO_URL
+            ) else defaultLogoUrl
         }",
               "sizes": "512x512",
               "type": "image/png"
