@@ -1,9 +1,10 @@
 /* eslint-disable max-statements */
+
 /* eslint-disable max-lines-per-function */
-function getS3Request(file, eventId) {
+function getS3Request(file, eventCode) {
   let xhr = new XMLHttpRequest();
 
-  xhr.open("GET", `/s3request?fileType=${file.type}&eventId=${eventId}`);
+  xhr.open("GET", `/s3request?fileType=${file.type}&eventCode=${eventCode}`);
 
   xhr.addEventListener("readystatechange", () => {
     if (xhr.readyState === 4) {
