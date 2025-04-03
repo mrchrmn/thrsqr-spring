@@ -14,7 +14,7 @@ interface EventController {
     fun createNewEvent(@ModelAttribute eventForm: EventForm, model: Model): String
 
     fun displayEventEditForm(@PathVariable eventCode: String, model: Model): String
-    fun updateEvent(@PathVariable eventCode: String, @ModelAttribute eventForm: EventForm): String
+    fun updateEvent(@ModelAttribute eventForm: EventForm): String
 
     fun sendWebManifest(@PathVariable eventCode: String, model: Model): ResponseEntity<String>
 }

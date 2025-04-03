@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/event", "/e")
 class EventController(
     val eventService: EventService,
-    private val webmanifestDomainService: WebmanifestDomainService
+    private val webmanifestDomainService: WebmanifestDomainService,
 ) : EventController {
 
     @GetMapping("/new")
     override fun displayNewEventForm(model: Model): String {
+        val newEventCode = eventService.generateEventCode()
+
+        model.addAttribute("eventCode", newEventCode)
+
         return "new-event"
     }
 
@@ -30,7 +34,7 @@ class EventController(
             return "redirect:/"
         }
 
-        val newEvent = eventService.createOrUpdateEvent(eventForm)
+        val newEvent = eventService.createEvent(eventForm)
 
         model.addAttribute("eventTitle", newEvent.title)
         model.addAttribute("eventCode", newEvent.code)
@@ -66,10 +70,10 @@ class EventController(
     }
 
     @PostMapping("/{eventCode}/edit")
-    override fun updateEvent(@PathVariable eventCode: String, eventForm: EventForm): String {
-        eventService.createOrUpdateEvent(eventForm, eventCode)
+    override fun updateEvent(eventForm: EventForm): String {
+        eventService.updateEvent(eventForm)
 
-        return "redirect:/event/${eventCode}"
+        return "redirect:/event/${eventForm.eventCode}"
     }
 
     @GetMapping("/{eventCode}/webmanifest")

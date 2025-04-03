@@ -45,7 +45,7 @@ function uploadFile(file, s3request, url) {
 
 document.addEventListener("DOMContentLoaded", () => {
   let logoFileInput = document.getElementById("eventLogoFile");
-  let eventId = document.getElementById("eventId").value;
+  let eventCode = document.getElementById("eventCode").value;
 
   logoFileInput.addEventListener("change", event => {
     let file = event.target.files[0];
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //   return null;
         // }
 
-        getS3Request(file, eventId);
+        getS3Request(file, eventCode);
       });
 
     });

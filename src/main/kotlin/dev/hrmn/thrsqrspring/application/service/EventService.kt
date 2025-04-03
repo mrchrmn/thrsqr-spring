@@ -26,34 +26,37 @@ class EventService(
 ) : EventService {
 
     @Transactional
-    override fun createOrUpdateEvent(eventForm: EventForm, code: String?): Event {
-        return if (code == null) {
-            val newCode = eventDomainService.generateEventCode { generatedCode ->
-                eventJpaAdapter.findByCode(generatedCode) == null
-            }
+    override fun createEvent(eventForm: EventForm): Event {
+        return Event(
+            code = eventForm.eventCode,
+            title = eventForm.eventTitle,
+            dayOfWeek = eventForm.eventDayOfWeek,
+            eventTime = LocalTime.parse(eventForm.eventTime),
+            timeZone = eventForm.eventTimeZone,
+            info = eventForm.eventInfo,
+            logoURL = eventForm.eventLogoURL
+        ).let { eventJpaAdapter.save(it) }
+    }
 
-            Event(
-                code = newCode,
-                title = eventForm.eventTitle,
-                dayOfWeek = eventForm.eventDayOfWeek,
-                eventTime = LocalTime.parse(eventForm.eventTime),
-                timeZone = eventForm.eventTimeZone,
-                info = eventForm.eventInfo,
-                logoURL = eventForm.eventLogoURL
-            )
-        } else {
-            val existingEvent = eventJpaAdapter.findByCode(code)
-                ?: throw EntityNotFoundException("Event with code $code not found")
+    override fun updateEvent(eventForm: EventForm): Event {
+        val code = eventForm.eventCode
+        val existingEvent = eventJpaAdapter.findByCode(code)
+            ?: throw EntityNotFoundException("Event with code $code not found")
 
-            existingEvent.apply {
-                title = eventForm.eventTitle
-                dayOfWeek = eventForm.eventDayOfWeek
-                eventTime = LocalTime.parse(eventForm.eventTime)
-                timeZone = eventForm.eventTimeZone
-                info = eventForm.eventInfo
-                logoURL = eventForm.eventLogoURL
-            }
+        return existingEvent.apply {
+            title = eventForm.eventTitle
+            dayOfWeek = eventForm.eventDayOfWeek
+            eventTime = LocalTime.parse(eventForm.eventTime)
+            timeZone = eventForm.eventTimeZone
+            info = eventForm.eventInfo
+            logoURL = eventForm.eventLogoURL
         }.let { eventJpaAdapter.save(it) }
+    }
+
+    override fun generateEventCode(): String {
+        return eventDomainService.generateEventCode { generatedCode ->
+            eventJpaAdapter.findByCode(generatedCode) == null
+        }
     }
 
     @Transactional
@@ -95,6 +98,7 @@ class EventService(
     override fun updateLastUpdateToNow(event: Event) {
         eventJpaAdapter.updateLastUpdateToNow(event)
     }
+
 
     private fun resetResponsesIfOutdated(event: Event, previousEventTime: OffsetDateTime) {
         if (eventDomainService.shouldResetResponses(event, previousEventTime)) {

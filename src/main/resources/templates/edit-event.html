@@ -90,6 +90,7 @@
             <img th:src="${logoURL}" id="eventLogo" width="125" alt="logo">
         </div>
 
+        <input type="hidden" id="eventCode" name="eventCode" th:value="${event.code}">
         <input type="hidden" id="eventLogoURL" name="eventLogoURL" th:value="${logoURL}">
 
         <input type="submit" th:value="#{updateEvent}" class="btn">
